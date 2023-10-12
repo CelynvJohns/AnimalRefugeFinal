@@ -1,0 +1,13 @@
+Celyn and Tiffany Front-end
+Rajal and Jack back-end
+
+Meetings: Wednesday's at 7ish
+
+Pages:
+About us - mission statement, cheezy
+Animal lookthrough - animals and thier info, optional each animal has thier own page
+FAQ - standard questions 
+Adoption page - form to fill out
+Admin page - admin details
+Favorites - favorite animals, where they're at ect
+Others? 
