@@ -17,6 +17,7 @@ namespace AnimalRefugeFinal.Models
 
         public DateTime ApplicationDate { get; set; }
 
+        public int StatusId { get; set; }
         public string Status { get; set; } // "Pending", "Approved", "Rejected"
     }
 }
