@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2.4.3  # Use the latest version
+        uses: actions/checkout@v2  # Automatically uses the latest version
         with:
           fetch-depth: 0  # Fetch all history for git commands
 
