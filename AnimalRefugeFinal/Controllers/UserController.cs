@@ -19,7 +19,10 @@ namespace AnimalRefugeFinal.Controllers
         //Display the user login form
         //Handle POST request for user authentication
         //Redirect authnticated users to their profile
-
+        public IActionResult Login()
+        {
+            return View();
+        }
 
         //Logout Action
         //Sign the user out and redirect to the homepage
