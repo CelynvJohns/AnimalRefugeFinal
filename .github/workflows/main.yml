@@ -20,4 +20,4 @@ jobs:
           git commit -m "Apply .gitignore" || echo "No changes to commit"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ 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 }}
