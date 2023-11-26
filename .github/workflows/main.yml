@@ -1,0 +1,23 @@
+name: Update GitIgnore
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch name
+
+jobs:
+  update-gitignore:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Update GitIgnore and Untrack Files
+        run: |
+          git rm --cached -r .
+          git add .
+          git commit -m "Apply .gitignore" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
