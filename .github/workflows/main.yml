@@ -3,7 +3,7 @@ name: Update GitIgnore
 on:
   push:
     branches:
-      - main  # Change this to your main branch name
+      - main
 
 jobs:
   update-gitignore:
@@ -11,7 +11,9 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.4.3  # Use the latest version
+        with:
+          fetch-depth: 0  # Fetch all history for git commands
 
       - name: Update GitIgnore and Untrack Files
         run: |
