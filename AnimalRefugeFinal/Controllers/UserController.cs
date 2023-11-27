@@ -30,7 +30,15 @@ namespace AnimalRefugeFinal.Controllers
         //UserProfile "Profile" Action
         //Display the user's prfile information
         //Allow users to edit and update their profiles
+        public IActionResult Profile()
+        {
+            return View();
+        }
 
+        public IActionResult EditProfile()
+        {
+            return View();
+        }
 
         //Favorites Action
         //Display a list of pets that the user has marked as favorites
