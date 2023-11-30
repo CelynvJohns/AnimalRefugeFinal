@@ -19,7 +19,10 @@ namespace AnimalRefugeFinal.Controllers
         //Display the user login form
         //Handle POST request for user authentication
         //Redirect authnticated users to their profile
-
+        public IActionResult Login()
+        {
+            return View();
+        }
 
         //Logout Action
         //Sign the user out and redirect to the homepage
@@ -27,7 +30,15 @@ namespace AnimalRefugeFinal.Controllers
         //UserProfile "Profile" Action
         //Display the user's prfile information
         //Allow users to edit and update their profiles
+        public IActionResult Profile()
+        {
+            return View();
+        }
 
+        public IActionResult EditProfile()
+        {
+            return View();
+        }
 
         //Favorites Action
         //Display a list of pets that the user has marked as favorites

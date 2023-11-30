@@ -1,0 +1,145 @@
+﻿@model AnimalRefugeFinal.Models.AdoptionApplication
+
+@{
+    ViewData["Title"] = "Adoption Application";
+}
+
+<style>
+    form {
+        max-width: 400px;
+        margin: auto;
+    }
+
+    div {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Apply" method="post">
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <input type="hidden" asp-for="User" value="@User.Identity.Name" />
+    }
+
+    <div>
+        <label asp-for="FirstName">First Name:</label>
+        <input asp-for="FirstName" />
+    </div>
+    <div>
+        <label asp-for="LastName">Last Name:</label>
+        <input asp-for="LastName" />
+    </div>
+
+    <div>
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" />
+    </div>
+
+    <div>
+        <label asp-for="PhoneNumber">Phone Number:</label>
+        <input asp-for="PhoneNumber" />
+    </div>
+
+    <div>
+        <label asp-for="Address">Address:</label>
+        <textarea asp-for="Address"></textarea>
+    </div>
+
+    <div>
+        <label asp-for="NumberOfPets">Number of Pets You are looking to Adopt:</label>
+        <input asp-for="NumberOfPets" type="number" min="1" id="numberOfPets" />
+    </div>
+
+    <!-- STILL NEED TO FIGURE OUT HOW TO MAKE THIS WORK, PROBABLY WILL NEED TO USE SESSIONS-->
+    @for (int i = 1; i <= Model.NumberOfPets; i++)
+    {
+        <div id="petsContainer">
+            <label asp-for="Pets[i].Name">Pet Name @i:</label>
+            <input asp-for="Pets[i].Name" />
+
+            <div>
+                <label asp-for="Pets[i].Reason">Why do you want to adopt this pet?</label>
+                <textarea asp-for="Pets[i].Reason"></textarea>
+            </div>
+        </div>
+    }
+
+    <div>
+        <label asp-for="CurrentPets">Current Pets:</label>
+        <input asp-for="CurrentPets" />
+    </div>
+
+    <div>
+        <button type="submit">Submit Application</button>
+    </div>
+</form>
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var numberOfPetsInput = document.getElementById("numberOfPets");
+            var petsContainer = document.getElementById("petsContainer");
+
+            numberOfPetsInput.addEventListener("change", function () {
+                updatePetFields();
+            });
+
+            function updatePetFields() {
+                var numberOfPets = parseInt(numberOfPetsInput.value, 10);
+
+                // Clear existing pet fields
+                petsContainer.innerHTML = "";
+
+                // Add new pet fields based on the number entered
+                for (var i = 1; i <= numberOfPets; i++) {
+                    var petNameLabel = document.createElement("label");
+                    petNameLabel.innerText = "Pet Name " + i + ":";
+                    petsContainer.appendChild(petNameLabel);
+
+                    var petNameInput = document.createElement("input");
+                    petNameInput.setAttribute("name", "Pets[" + (i - 1) + "].Name");
+                    petsContainer.appendChild(petNameInput);
+
+                    var petReasonLabel = document.createElement("label");
+                    petReasonLabel.innerText = "Why do you want to adopt this pet?";
+                    petsContainer.appendChild(petReasonLabel);
+
+                    var petReasonTextarea = document.createElement("textarea");
+                    petReasonTextarea.setAttribute("name", "Pets[" + (i - 1) + "].Reason");
+                    petsContainer.appendChild(petReasonTextarea);
+
+                    var div = document.createElement("div");
+                    petsContainer.appendChild(div);
+                }
+            }
+        });
+    </script>
+}

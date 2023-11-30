@@ -23,5 +23,8 @@ namespace AnimalRefugeFinal.Models
 
         // Navigation property for favorites
         public ICollection<Favorite> Favorites { get; set; }
+
+        public string Reason { get; set; }
+
     }
 }
