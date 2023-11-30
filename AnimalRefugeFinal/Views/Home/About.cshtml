@@ -1,0 +1,118 @@
+﻿@{
+	ViewData["Title"] = "About Us";
+}
+
+<style>
+	.hoursP {
+		background-color: black;
+		color: whitesmoke;
+		font-size: x-large;
+		padding-left: 10px;
+		text-align: center;
+	}
+
+	.weekHoursP {
+		font-size: large;
+		padding-left: 60px;
+	}
+
+	strong {
+		color: black;
+		font-size: larger;
+	}
+
+	body {
+		box-sizing: border-box;
+	}
+
+	.mainColumns {
+		display: flex;
+	}
+
+	main div.mainColumns .leftColumnSection, main div.mainColumns .rightColumnSection {
+		width: 25%;
+	}
+
+	main div.mainColumns .centerColumnSection {
+		width: 50%;
+	}
+
+	.leftColumnSection {
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-right: 10px;
+		margin-left: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.centerColumnSection {
+		margin-top: 5px;
+		margin-bottom: 5px;
+		padding-left: 50px;
+		padding-right: 50px;
+	}
+
+	.rightColumnSection {
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-right: 10px;
+		margin-left: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 10px;
+	}
+</style>
+
+<div class="text-center">
+	<h1 class="display-4">About Us</h1>
+</div>
+
+<div class="mainColumns">
+	<section class="leftColumnSection">
+		<div>
+			The Animal Rescue League of Des Moines was founded in 1995 by a group of animal lovers who were concerned about the homeless and abandoned animals in our community.
+			We started out as a small shelter, but we have grown over the years to become a leading provider of animal welfare services in the region.
+			Since it's opening the Animal Rescue League has placed an estimated 65,000 homeless cats and dogs in new households.
+		</div>
+
+		<div>
+			Our mission is to rescue, rehabilitate, and rehome animals in need. Our values are compassion, respect, and responsibility.
+			We believe that every animal deserves a loving home, and we are committed to doing everything we can to make that happen.
+		</div>
+	</section>
+
+	<section class="centerColumnSection">
+		<p class="hoursP">
+			Hours of Operation:
+		</p>
+
+		<p class="weekHoursP">
+			Sunday 12:00 noon to 5:00 pm <br>
+			Monday - Thursday 10:00 am to 7:00 pm <br>
+			Friday 10:00 am to 4:00 pm <br>
+			Saturday 9:00 am to 5:00 pm
+		</p>
+
+	</section>
+
+	<section class="rightColumnSection">
+		<div>
+			There are many ways you can help the Animal Rescue League of Des Moines. You can volunteer your time, donate money or supplies, or adopt an animal.
+			Every little bit helps us make a difference in the lives of animals.
+			We are grateful for the support of our community. Together, we can make a difference in the lives of animals
+		</div>
+		<div>
+			<strong>Phone Number: </strong>
+			<p>(515) 355-3091</p>
+		</div>
+		<div>
+			<strong>Mailing Address:</strong>
+			<p>
+				The Animal Rescue League - Des Moines<br>
+				1300 Ivy Road <br>
+				Des Moines, Iowa 50032
+			</p>
+		</div>
+	</section>
+</div>
