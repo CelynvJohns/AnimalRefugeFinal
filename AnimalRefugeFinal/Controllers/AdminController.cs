@@ -29,11 +29,71 @@ namespace AnimalRefugeFinal.Controllers
             return View(pets);
         }
 
-        // ManageUsers Action
-        // Get a list of all users from the database, including user info
-        // Display a table with user details
-        // Option to view user profile, edit user information, or deactivate accounts
-        public IActionResult ManageUsers()
+        // EditPet Action
+        // Display a form to edit pet information
+        [HttpGet]
+        public IActionResult EditPet(int petId)
+        {
+            var pet = _context.Pets.Find(petId);
+            return View(pet);
+        }
+
+        // Handle POST request to process pet edits
+        [HttpPost]
+        public IActionResult EditPet(Pet editedPet)
+        {
+            if (ModelState.IsValid)
+            {
+                // Update the pet in the database
+                _context.Pets.Update(editedPet);
+                _context.SaveChanges();
+
+                return RedirectToAction("ManagePet");
+            }
+
+            // If ModelState is not valid, return to the edit form with errors
+            return View(editedPet);
+        }
+
+        // DeletePet Action
+        // Delete a pet from the database
+        public IActionResult DeletePet(int petId)
+        {
+            var pet = _context.Pets.Find(petId);
+
+            if (pet != null)
+            {
+                // Remove the pet from the database
+                _context.Pets.Remove(pet);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ManagePet");
+        }
+
+        // MarkAsAdopted Action
+        // Mark a pet as adopted
+        public IActionResult MarkAsAdopted(int petId)
+        {
+            var pet = _context.Pets.Find(petId);
+
+            if (pet != null)
+            {
+                // Implement logic to mark the pet as adopted
+                
+            }
+
+            return RedirectToAction("ManagePet");
+        }
+
+        
+    
+
+    // ManageUsers Action
+    // Get a list of all users from the database, including user info
+    // Display a table with user details
+    // Option to view user profile, edit user information, or deactivate accounts
+    public IActionResult ManageUsers()
         {
             var users = _context.Users.ToList();
             return View(users);
