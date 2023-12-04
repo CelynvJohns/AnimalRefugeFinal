@@ -9,6 +9,8 @@ namespace AnimalRefugeFinal.Models
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Status> Statuses { get; set; } // Add Status DbSet
         public DbSet<AdoptionApplication> AdoptionApplications { get; set; } // Add AdoptionApplication DB set
+        public DbSet<User> Users { get; set; } // add User info to database
+        public DbSet<Favorite> Favorites { get; set; } // add User favorite to database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
