@@ -45,7 +45,7 @@ namespace AnimalRefugeFinal.Controllers
         // Filter by species
         public IActionResult FilterByType(string species)
         {
-            // Assuming there's a Species property in the Pet model
+            // get spicies to list for filtering
             var filteredPets = _context.Pets.Where(p => p.Species == species).ToList();
 
             // Pass the filtered pets to the view

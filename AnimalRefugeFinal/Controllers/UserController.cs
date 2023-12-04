@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AnimalRefugeFinal.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using AnimalRefugeFinal.Models.AnimalRefugeFinal.Models;
 
 namespace AnimalRefugeFinal.Controllers
 {
@@ -76,8 +80,7 @@ namespace AnimalRefugeFinal.Controllers
         // Sign the user out and redirect to the homepage
         public IActionResult Logout()
         {
-            // Add logic for user logout
-            // For example, you might clear the user's authentication token or session
+            
 
             return RedirectToAction("Index", "Home");
         }
@@ -110,7 +113,8 @@ namespace AnimalRefugeFinal.Controllers
                 var user = _context.Users.Find(editedUser.Id);
                 user.Username = editedUser.Username;
                 user.PasswordHash = editedUser.PasswordHash;
-                // Update other properties as needed
+                user.FirstName = editedUser.FirstName;
+                user.LastName = editedUser.LastName;
                 _context.SaveChanges();
 
                 // Redirect to the user's profile after successful profile update
@@ -126,7 +130,14 @@ namespace AnimalRefugeFinal.Controllers
         public IActionResult Favorites()
         {
             // Add logic to fetch and display the user's favorite pets
-            return View();
+            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(userIdString);
+            var userFavorites = _context.Favorites
+                .Include(f => f.Pet)
+                .Where(f => f.UserId == userId)
+                .Select(f => f.Pet)
+                .ToList();
+            return View(userFavorites);
         }
 
         // ApplyForAdoption Action
@@ -136,29 +147,60 @@ namespace AnimalRefugeFinal.Controllers
         [HttpGet]
         public IActionResult ApplyForAdoption(int petId)
         {
-            // Add logic to fetch and display the adoption application form
-            return View();
+            // Retrieve the pet based on the provided petId
+            var pet = _context.Pets.Find(petId);
+
+            if (pet == null)
+            {
+                // Pet not found, you might want to handle this case (redirect to an error page or show a message)
+                return NotFound();
+            }
+
+            // Create a new AdoptionApplicationViewModel to pass both the pet and adoption application form data to the view
+            var viewModel = new AdoptionApplicationViewModel
+            {
+                PetId = pet.Id,
+                PetName = pet.Name,
+                // Add other necessary properties for your view model
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult ApplyForAdoption(AdoptionApplication application)
+        [Authorize] // Ensure that only authenticated users can submit adoption applications
+        public IActionResult ApplyForAdoption(AdoptionApplicationViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Add logic to save the adoption application to the database
-                _context.AdoptionApplications.Add(application);
-                _context.SaveChanges();
-
-                // Redirect to a confirmation page or the user's profile
-                return RedirectToAction("Profile");
+                // Model validation failed, return to the adoption application form with validation errors
+                return View(viewModel);
             }
 
-            // If application submission fails, return to the application form with errors
-            return View(application);
+            // Create a new AdoptionApplication based on the submitted data
+            var application = new AdoptionApplication
+            {
+                UserId = /* Get the current user's ID */,
+                PetId = viewModel.PetId,
+                Reasons = viewModel.Reasons,
+                ApplicationDate = DateTime.Now,
+                Status = "Pending" // Set the initial status
+            };
+
+            // Add the adoption application to the database
+            _context.AdoptionApplications.Add(application);
+            _context.SaveChanges();
+
+            //  redirect to a confirmation page or the pet details page
+            return RedirectToAction("Details", "Pet", new { id = viewModel.PetId });
         }
 
-        // TrackApplications Action
-        // Display a list of the user's adoption applications and their statuses
+        
+    
+
+    // TrackApplications Action
+    // Display a list of the user's adoption applications and their statuses
+       
         public IActionResult TrackApplications()
         {
             // Add logic to fetch and display the user's adoption applications
@@ -194,4 +236,4 @@ namespace AnimalRefugeFinal.Controllers
         }
     }
 }
-``
+

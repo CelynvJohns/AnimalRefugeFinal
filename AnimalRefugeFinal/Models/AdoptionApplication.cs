@@ -58,6 +58,8 @@ namespace AnimalRefugeFinal.Models
         public bool WantsToAdoptDog { get; set; }
 
         public bool HasFencedInYard { get; set; }
+        public int PetId { get; internal set; }
+        public string Reasons { get; internal set; }
     }
 
     public class CurrentHumans

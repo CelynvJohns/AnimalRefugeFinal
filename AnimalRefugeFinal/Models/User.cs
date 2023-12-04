@@ -13,8 +13,8 @@ namespace AnimalRefugeFinal.Models
         public string PasswordHash { get; set; }
 
         // I think adding in a first and last for the profile would be nice, so I added it but commented it out
-        //public string FirstName { get; set; }
-        //public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public string Role { get; set; } // "Admin" or "User"
 
