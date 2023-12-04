@@ -1,30 +1,58 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using AnimalRefugeFinal.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalRefugeFinal.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly PetContext _context;
+
+        public AdminController(PetContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        //ManagePet Action
-        //get a list of all pets from the database
-        //display table with pet info
-        //- options to eidt, delete or mark pet as adopted
+        // ManagePet Action
+        // Get a list of all pets from the database
+        // Display a table with pet info
+        // Options to edit, delete, or mark pet as adopted
+        public IActionResult ManagePet()
+        {
+            var pets = _context.Pets.ToList();
+            return View(pets);
+        }
 
+        // ManageUsers Action
+        // Get a list of all users from the database, including user info
+        // Display a table with user details
+        // Option to view user profile, edit user information, or deactivate accounts
+        public IActionResult ManageUsers()
+        {
+            var users = _context.Users.ToList();
+            return View(users);
+        }
 
-        //ManageUsers Action
-        // - get list of all users from the database, include user info
-        // - display table with user details
-        // - option to view user profile, edit user information, or deactivate accounts
+        // ManageApplications Action
+        // Fetch a list of adoption applications submitted by users
+        // Display application details - user name, app date, pet info
+        // Provide options to approve or reject adoption applications
+        // Status of applications - pending, approved, rejected
+        public IActionResult ManageApplications()
+        {
+            var applications = _context.AdoptionApplications
+                .Include(a => a.User)
+                .Include(a => a.Pets)
+                .ToList();
 
-
-        //ManageApplications Action
-        // - fetch a list of adoptioon applications submitted by users
-        // - display application details - user name, app date, pet info
-        // - provide options to approve or reject adoption applications
-        // - status of applications - pending, approved, rejected
+            return View(applications);
+        }
     }
 }
+
