@@ -92,15 +92,77 @@ namespace AnimalRefugeFinal.Controllers
         
     
 
-    // ManageUsers Action
-    // Get a list of all users from the database, including user info
-    // Display a table with user details
-    // Option to view user profile, edit user information, or deactivate accounts
-    public IActionResult ManageUsers()
+        // ManageUsers Action
+        // Get a list of all users from the database, including user info
+        // Display a table with user details
+        // Option to view user profile, edit user information, or deactivate accounts
+        public IActionResult ManageUsers()
         {
             var users = _context.Users.ToList();
             return View(users);
         }
+
+        
+        public IActionResult EditUser(int userId)
+        {
+            var user = _context.Users.Find(userId);
+            if (user == null)
+            {
+                // Handle the case where the user is not found
+                return NotFound();
+            }
+
+            // Display the user edit form
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult EditUser(User updatedUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Model validation failed, return to the edit user form with validation errors
+                return View(updatedUser);
+            }
+
+            // Update the user's profile information
+            var userProfile = _context.Users.Find(updatedUser.Id);
+
+            if (userProfile != null)
+            {
+                userProfile.Username = updatedUser.Username;
+                userProfile.FirstName = updatedUser.FirstName;
+                userProfile.LastName = updatedUser.LastName;
+                // Update other properties as needed
+
+                // Save changes to the database
+                _context.SaveChanges();
+            }
+
+            // Redirect to the user's profile page after editing
+            return RedirectToAction("ViewUserProfile", new { userId = updatedUser.Id });
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUser(int userId)
+        {
+            var user = _context.Users.Find(userId);
+            if (user == null)
+            {
+                // Handle the case where the user is not found
+                return NotFound();
+            }
+
+            // Remove the user from the database
+            _context.Users.Remove(user);
+
+            // Save changes to the database
+            _context.SaveChanges();
+
+            // Redirect to the manage users page or any other desired page
+            return RedirectToAction("ManageUsers");
+        }
+
 
         // ManageApplications Action
         // Fetch a list of adoption applications submitted by users
