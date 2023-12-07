@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AnimalRefugeFinal.Models
 {
@@ -24,5 +25,6 @@ namespace AnimalRefugeFinal.Models
 
         // Navigation property for adoption applications
         public ICollection<AdoptionApplication> AdoptionApplications { get; set; }
+
     }
 }
