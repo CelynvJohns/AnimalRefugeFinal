@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AnimalRefugeFinal.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,15 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
     options.AppendTrailingSlash = true;
 });
+
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 10;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+})
+    .AddEntityFrameworkStores<PetContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -33,6 +44,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // routes

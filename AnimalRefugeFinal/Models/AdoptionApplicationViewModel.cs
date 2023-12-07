@@ -12,18 +12,18 @@ namespace AnimalRefugeFinal.Models
             [Required(ErrorMessage = "Please provide reasons for adoption.")]
             public string Reasons { get; set; }
 
-            // Add other necessary properties for your adoption application form
+            // Add other necessary properties for adoption application form
 
             // Properties to pass pet information to the view
             public string PetName { get; set; }
-            // Add other necessary properties for displaying pet information
+            // Add other necessary properties for pet information
 
             // Constructor to initialize the view model with pet information
             public AdoptionApplicationViewModel(Pet pet)
             {
                 PetId = pet.Id;
                 PetName = pet.Name;
-                // Initialize other properties for displaying pet information
+                // Initialize other properties for pet information
             }
 
             // Default constructor for model binding

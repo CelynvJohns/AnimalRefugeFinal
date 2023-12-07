@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalRefugeFinal.Models
 {
-    public class PetContext : DbContext
+    public class PetContext : IdentityDbContext<User>
     {
         public PetContext(DbContextOptions<PetContext> options) : base(options) { }
 
