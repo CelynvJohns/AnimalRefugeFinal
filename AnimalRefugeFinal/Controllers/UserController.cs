@@ -22,76 +22,28 @@ namespace AnimalRefugeFinal.Controllers
             return View();
         }
 
-        // Registration Action
-        // Display the user registration form
-        // Handle POST request to register a new user
-        // Validate user input and create a new user account
-        [HttpGet]
-        public IActionResult Registration()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Registration(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                // Add logic to save the user to the database
-                _context.Users.Add(user);
-                _context.SaveChanges();
-
-                // Redirect to the login page after successful registration
-                return RedirectToAction("Login");
-            }
-
-            // If registration fails, return to the registration page with errors
-            return View(user);
-        }
-
-        // Login Action
-        // Display the user login form
-        // Handle POST request for user authentication
-        // Redirect authenticated users to their profile
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login(string username, string password)
-        {
-            // Add logic for user authentication
-            var user = _context.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
-
-            if (user != null)
-            {
-                // Redirect to the user's profile after successful login
-                return RedirectToAction("Profile");
-            }
-
-            // If login fails, return to the login page with an error message
-            ViewBag.ErrorMessage = "Invalid username or password";
-            return View();
-        }
-
-        // Logout Action
-        // Sign the user out and redirect to the homepage
-        public IActionResult Logout()
-        {
-            
-
-            return RedirectToAction("Index", "Home");
-        }
-
+ 
         // UserProfile "Profile" Action
         // Display the user's profile information
         // Allow users to edit and update their profiles
         public IActionResult Profile()
         {
-            // Add logic to fetch and display the user's profile information
-            return View();
+            // Get the current user's ID
+            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(userIdString);
+
+            // Fetch the user's profile information
+            var userProfile = _context.Users
+                .Where(user => user.Id == userId)
+                .FirstOrDefault();
+
+            if (userProfile != null)
+            {
+                return View(userProfile);
+            }
+
+            // If the user profile is not found, you can handle it accordingly (e.g., redirect to an error page)
+            return NotFound();
         }
 
         // EditProfile Action
@@ -203,9 +155,19 @@ namespace AnimalRefugeFinal.Controllers
        
         public IActionResult TrackApplications()
         {
-            // Add logic to fetch and display the user's adoption applications
-            return View();
+            // Get the current user's ID
+            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(userIdString);
+
+            // Fetch the user's adoption applications along with associated pet and status information
+            var applications = _context.AdoptionApplications
+                .Where(app => app.UserId == userId)
+                .Include(app => app.Pets)
+                .ToList();
+
+            return View(applications);
         }
+    
 
         // ScheduleVisit Action
         // Allow users to schedule visits to meet pets in person

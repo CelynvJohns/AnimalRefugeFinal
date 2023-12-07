@@ -47,13 +47,14 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// routes
-app.UseEndpoints(endpoints =>
-{
-    // default route
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
+app.MapControllerRoute(
+    name: "Static",
+    pattern: "{controller=Home}/{action}/Page/{num}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+await PetContext.CreateAdminUser(app.Services);
 
 app.Run();

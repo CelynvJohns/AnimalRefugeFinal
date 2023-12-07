@@ -32,6 +32,9 @@ namespace AnimalRefugeFinal.Models
 
         public Pet[] Pets { get; set; }
 
+        
+
+
         public CurrentPet[] CurrentPet { get; set; } // Corrected property name to CurrentPets
         public string CurrentPetName { get; set; }
         public int CurrentPetAge { get; set; }
