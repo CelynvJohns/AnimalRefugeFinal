@@ -26,5 +26,7 @@ namespace AnimalRefugeFinal.Models
 
         public string Reason { get; set; }
 
+        public bool IsAdopted { get; set; }
+
     }
 }

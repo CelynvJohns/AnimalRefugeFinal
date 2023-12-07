@@ -80,7 +80,10 @@ namespace AnimalRefugeFinal.Controllers
             if (pet != null)
             {
                 // Implement logic to mark the pet as adopted
-                
+                pet.IsAdopted = true;
+
+                // Save changes to the database
+                _context.SaveChanges();
             }
 
             return RedirectToAction("ManagePet");
