@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace AnimalRefugeFinal.Models
 {
-    public class User
+    public class User : IdentityUser
     {
         public int Id { get; set; }
 
@@ -13,8 +14,8 @@ namespace AnimalRefugeFinal.Models
         public string PasswordHash { get; set; }
 
         // I think adding in a first and last for the profile would be nice, so I added it but commented it out
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+       public string FirstName { get; set; }
+       public string LastName { get; set; }
 
         public string Role { get; set; } // "Admin" or "User"
 

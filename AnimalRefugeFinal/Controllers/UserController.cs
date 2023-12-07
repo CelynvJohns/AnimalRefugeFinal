@@ -180,7 +180,7 @@ namespace AnimalRefugeFinal.Controllers
             // Create a new AdoptionApplication based on the submitted data
             var application = new AdoptionApplication
             {
-                UserId = /* Get the current user's ID */,
+                UserId = /* Get the current user's ID */
                 PetId = viewModel.PetId,
                 Reasons = viewModel.Reasons,
                 ApplicationDate = DateTime.Now,
