@@ -50,10 +50,36 @@ namespace AnimalRefugeFinal.Controllers
         // Display a form for editing the user's profile
         // Handle POST request to update the user's profile
         [HttpGet]
-        public IActionResult EditProfile()
+        public IActionResult EditProfile(User updatedUser)
         {
-            // Add logic to fetch and display the user's profile information for editing
-            return View();
+            if (ModelState.IsValid)
+            {
+                // Get the current user's ID
+                var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = int.Parse(userIdString);
+
+                // Fetch the user's profile information
+                var userProfile = _context.Users
+                    .Where(user => user.Id == userId)
+                    .FirstOrDefault();
+
+                if (userProfile != null)
+                {
+                    // Update the user's profile information
+                    userProfile.Username = updatedUser.Username;
+                    userProfile.PasswordHash = updatedUser.PasswordHash;
+                    userProfile.FirstName = updatedUser.FirstName;
+                    userProfile.LastName = updatedUser.LastName;
+
+                    _context.SaveChanges();
+
+                    // Redirect to the profile page after updating
+                    return RedirectToAction("Profile");
+                }
+            }
+
+            // If the model state is not valid, return to the edit profile page with validation errors
+            return View(updatedUser);
         }
 
         [HttpPost]
