@@ -119,6 +119,30 @@ namespace AnimalRefugeFinal.Controllers
             return View(userFavorites);
         }
 
+        //List of user's adoptiona applications
+        public IActionResult TrackApplications()
+        {
+            // Get the current user's ID
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userIdString == null)
+            {
+                // Handle the case where the user is not authenticated
+                return RedirectToAction("Login", "User");
+            }
+
+            var userId = int.Parse(userIdString);
+
+            // Fetch the user's adoption applications
+            var applications = _context.AdoptionApplications
+                .Include(a => a.Pets)  // Include the associated pet information
+                .Where(a => a.UserId == userId)
+                .ToList();
+
+            return View(applications);
+
+        }
+
     }
 }
 
