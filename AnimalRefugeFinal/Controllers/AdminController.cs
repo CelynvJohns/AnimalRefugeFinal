@@ -102,7 +102,23 @@ namespace AnimalRefugeFinal.Controllers
             return View(users);
         }
 
-        
+        // ViewUserProfile Action
+        // Display the profile information of a specific user
+        public IActionResult ViewUserProfile(int userId)
+        {
+            // Fetch the user's profile information
+            var userProfile = _context.Users.Find(userId);
+
+            if (userProfile != null)
+            {
+                return View(userProfile);
+            }
+
+            // If the user profile is not found, you can handle it accordingly (e.g., redirect to an error page)
+            return NotFound();
+        }
+
+
         public IActionResult EditUser(int userId)
         {
             var user = _context.Users.Find(userId);
@@ -143,7 +159,7 @@ namespace AnimalRefugeFinal.Controllers
             return RedirectToAction("ViewUserProfile", new { userId = updatedUser.Id });
         }
 
-        [HttpDelete]
+        [HttpPost]
         public IActionResult DeleteUser(int userId)
         {
             var user = _context.Users.Find(userId);
