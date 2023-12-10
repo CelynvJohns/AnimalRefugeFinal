@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Transactions;
 
 namespace AnimalRefugeFinal.Models
 {
@@ -10,7 +11,20 @@ namespace AnimalRefugeFinal.Models
             public int PetId { get; set; }
 
             [Required(ErrorMessage = "Please provide reasons for adoption.")]
+            [StringLength(200)]
             public string Reasons { get; set; }
+
+            [Required]
+            [Range(0, 50)]
+            public int PetAge { get; set; }
+
+            [Required]
+            [StringLength(30)]
+            public string PetSpecies { get; set; }
+
+            [Required]
+            [StringLength (200)]
+            public string PetDescription { get; set; }
 
             // Add other necessary properties for adoption application form
 
@@ -23,6 +37,10 @@ namespace AnimalRefugeFinal.Models
             {
                 PetId = pet.Id;
                 PetName = pet.Name;
+                PetAge = pet.Age;
+                PetSpecies = pet.Species;
+                PetDescription = pet.Description;
+
                 // Initialize other properties for pet information
             }
 

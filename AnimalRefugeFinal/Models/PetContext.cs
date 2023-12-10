@@ -14,13 +14,15 @@ namespace AnimalRefugeFinal.Models
         public DbSet<User> Users { get; set; } // add User info to database
         public DbSet<Favorite> Favorites { get; set; } // add User favorite to database
 
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Custom configurations for the Pet entity go here
 
             modelBuilder.Entity<Pet>().HasData(
-                new Pet { Id = 1, Name = "Fluffy", Species = "Cat", Age = 2, Description = "A cute fluffy cat.", BondedBuddyStatus = "None", SpecialCareInstructions = "Handle with care" },
-                new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Loves walks and playtime" }
+                new Pet { Id = 1, Name = "Fluffy", Species = "Cat", Age = 2, Description = "A cute fluffy cat." },
+                new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home." }
                 );
 
             //Other configurations or seed data go here
@@ -36,33 +38,47 @@ namespace AnimalRefugeFinal.Models
                 .WithMany()
                 .HasForeignKey(a => a.StatusId);
 
+            //configure relationship for favorite and User
+            modelBuilder.Entity<Favorite>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.Favorites)
+                .HasForeignKey(f => f.UserId);
+
+            modelBuilder.Entity<AdoptionApplication>()
+            .HasMany(a => a.CurrentPet)
+            .WithOne()
+            .HasForeignKey(a => a.Id);
+
+            modelBuilder.Entity<AdoptionApplication>()
+                .HasMany(a => a.CurrentHumans)
+                .WithOne()
+                .HasForeignKey(a => a.Id);
+
         }
 
         public static async Task CreateAdminUser(IServiceProvider serviceProvider)
         {
-            using (var scoped = serviceProvider.CreateScope())
+            using var scoped = serviceProvider.CreateScope();
+            UserManager<User> userManager = scoped.ServiceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string username = "petadmin";
+            string pwd = "adminpet";
+            string roleName = "Admin";
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(roleName) == null)
             {
-                UserManager<User> userManager = scoped.ServiceProvider.GetRequiredService<UserManager<User>>();
-                RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
 
-                string username = "petadmin";
-                string pwd = "adminpet";
-                string roleName = "Admin";
-
-                // if role doesn't exist, create it
-                if (await roleManager.FindByNameAsync(roleName) == null)
+            if (await userManager.FindByNameAsync(username) == null)
+            {
+                User user = new User() { UserName = username };
+                var result = await userManager.CreateAsync(user, pwd);
+                if (result.Succeeded)
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
-
-                if (await userManager.FindByNameAsync(username) == null)
-                {
-                    User user = new User() { UserName = username };
-                    var result = await userManager.CreateAsync(user, pwd);
-                    if (result.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(user, roleName);
-                    }
+                    await userManager.AddToRoleAsync(user, roleName);
                 }
             }
         }

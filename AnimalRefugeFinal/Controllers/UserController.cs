@@ -30,11 +30,11 @@ namespace AnimalRefugeFinal.Controllers
         {
             // Get the current user's ID
             var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userId = int.Parse(userIdString);
+            
 
             // Fetch the user's profile information
             var userProfile = _context.Users
-                .Where(user => user.Id == userId)
+                .Where(user => user.Id == userIdString)
                 .FirstOrDefault();
 
             if (userProfile != null)
@@ -55,11 +55,11 @@ namespace AnimalRefugeFinal.Controllers
             
                 // Get the current user's ID
                 var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var userId = int.Parse(userIdString);
+                
 
                 // Fetch the user's profile information
                 var userProfile = _context.Users
-                    .Where(user => user.Id == userId)
+                    .Where(user => user.Id == userIdString)
                     .FirstOrDefault();
 
                 if (userProfile != null)
@@ -80,15 +80,15 @@ namespace AnimalRefugeFinal.Controllers
             {
                 // Get the current user's ID
                 var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var userId = int.Parse(userIdString);
+                
 
                 // Fetch the user's profile information
                 var userProfile = _context.Users
-                    .Where(user => user.Id == userId)
+                    .Where(user => user.Id == userIdString)
                     .FirstOrDefault();
 
                 // Update the user's profile information
-                userProfile.Username = editedUser.Username;
+                userProfile.UserName = editedUser.UserName;
                 userProfile.PasswordHash = editedUser.PasswordHash;
                 userProfile.FirstName = editedUser.FirstName;
                 userProfile.LastName = editedUser.LastName;
