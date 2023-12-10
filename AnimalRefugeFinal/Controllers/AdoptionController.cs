@@ -1,4 +1,4 @@
-﻿using AnimalRefugeFinal.Models.AnimalRefugeFinal.Models;
+﻿
 using AnimalRefugeFinal.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ namespace AnimalRefugeFinal.Controllers
         public IActionResult Apply(int petId)
         {
            
-            var viewModel = new AdoptionApplicationViewModel
+            var viewModel = new AdoptionApplication
             {
                 PetId = petId
             };
@@ -30,7 +30,7 @@ namespace AnimalRefugeFinal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Apply(AdoptionApplicationViewModel viewModel)
+        public IActionResult Apply(AdoptionApplication viewModel)
         {
             if (!ModelState.IsValid)
             {
