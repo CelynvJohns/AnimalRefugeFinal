@@ -8,7 +8,6 @@ namespace AnimalRefugeFinal.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string? Name { get; set; } // Examples: "Pending", "Approved", "Rejected"
 
         // Navigation property for adoption applications
