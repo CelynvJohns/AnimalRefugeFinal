@@ -42,14 +42,23 @@ namespace AnimalRefugeFinal.Controllers
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userId = int.Parse(userIdString);
 
-            // Create a new AdoptionApplication based on the submitted data
+            // Fetch the "Pending" status from the database
+            var pendingStatus = _context.Statuses.FirstOrDefault(s => s.Name == "Pending");
+
+            if (pendingStatus == null)
+            {
+                throw new InvalidOperationException("Pending status not found");
+            }
+
+
+            
             var application = new AdoptionApplication
             {
                 UserId = userId,
                 PetId = viewModel.PetId,
                 Reasons = viewModel.Reasons,
                 ApplicationDate = DateTime.Now,
-                Status = "Pending" // Set the initial status
+                Status = pendingStatus// Set the initial status
             };
 
             // Add the adoption application to the database
