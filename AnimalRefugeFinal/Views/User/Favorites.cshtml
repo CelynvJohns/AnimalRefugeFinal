@@ -1,0 +1,24 @@
+﻿@model AnimalRefugeFinal.Models.PetListViewModel
+
+<h2>Your Favorite Pets</h2>
+
+<div>
+    <label for="speciesDropdown">Filter by Species:</label>
+    <select id="speciesDropdown" onchange="location = this.value;">
+        @foreach (var species in Model.Species)
+        {
+            <option value="@Url.Action("Favorites", new { species = species })"
+                    class="@Model.CheckActiveSpecies(species)">
+                @species
+            </option>
+        }
+    </select>
+</div>
+
+<ul>
+    @foreach (var pet in Model.Pets)
+    {
+        <li>@pet.Name - @pet.Description</li>
+        <!-- Add more details as needed -->
+    }
+</ul>
