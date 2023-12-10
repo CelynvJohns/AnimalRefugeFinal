@@ -35,5 +35,7 @@ namespace AnimalRefugeFinal.Models
         // Navigation property for adoption applications
         public ICollection<AdoptionApplication> AdoptionApplications { get; set; }
 
+        public List<Pet> Pets { get; set; }
+
     }
 }
