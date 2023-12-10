@@ -1,0 +1,113 @@
+﻿@model AnimalRefugeFinal.Models.Pet
+<h2>Animals for Adoption</h2>
+
+@using (Html.BeginForm("List", "Pet", FormMethod.Get, new { id = "formId" }))
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-collapse" id="navbarSupportedContent">
+                <form class="d-flex">
+                    <div class="nav-item">
+                        @Html.LabelFor(model => model.Species, "Filter by Species:", new { @class = "nav-link" })
+                        @Html.DropDownListFor(model => model.Species, new List<SelectListItem>
+                    {
+                    new SelectListItem { Text = "Dog", Value = "Dog" },
+                    new SelectListItem { Text = "Cat", Value = "Cat" },
+                    new SelectListItem { Text = "Rabbit", Value = "Rabbit" },
+                    new SelectListItem { Text = "Reptile", Value = "Reptile" },
+                    new SelectListItem { Text = "Bunny", Value = "Bunny" }
+                    }, "Select a Species", new { @class = "nav-link", id = "species" })
+                    </div>
+
+                    <div class="nav-item">
+                        @Html.LabelFor(model => model.BondedBuddyStatus, "Filter by Bonded Buddy Status:", new { @class = "nav-link" })
+                        @Html.DropDownListFor(model => model.BondedBuddyStatus, new List<SelectListItem>
+                    {
+                    new SelectListItem { Text = "bonded", Value = "bonded" },
+                    new SelectListItem { Text = "not bonded", Value = "not-bonded" }
+                    }, new { @class = "nav-link" })
+                    </div>
+
+                    <div class="nav-item">
+                        @Html.LabelFor(model => model.Age, "Filter by Age:", new { @class = "nav-link" })
+                        @Html.DropDownListFor(model => model.Age, new List<SelectListItem>
+                    {
+                    new SelectListItem { Text = "Young", Value = "0-5" },
+                    new SelectListItem { Text = "Middle age", Value = "6-10" },
+                    new SelectListItem { Text = "Elder", Value = "11-50" }
+                    }, new { @class = "nav-link", onchange = "filterByAge(this.value);" })
+                    </div>
+
+                    <div class="nav-item">
+                        <input type="submit" value="Filter" class="btn btn-primary nav-link" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <h3>Species: @Model.Species</h3>
+    <h3>Bonded-Buddy Status: @Model.BondedBuddyStatus</h3>
+    <h3>Age: @Model.Age</h3>
+
+    @foreach (var pet in Model.Pets)
+    {
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="images/@(pet.Name).jpg">
+                <div class="card-body">
+                    <h5 class="card-title">@pet.Name</h5>
+                    <p class="card-text">Species: @pet.Species</p>
+                    <p class="card-text">Pet Age: @pet.Age</p>
+                    <p class="card-text">Bonded Buddy Status: @pet.BondedBuddyStatus</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <button onclick="addToFavorites('@pet.Name')">Add to Favorites</button>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a asp-area="" asp-controller="Pet" asp-action="Details" asp-route-id="@pet.Id">Pet Details</a>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="card-body">
+                        <a asp-area="" asp-controller="Pet" asp-action="Edit" asp-route-id="@Model.Id">Edit Pet</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    @section scripts {
+    <script>
+        // Define the addToFavorites function
+        function addToFavorites(name) {
+            // Make an AJAX request to add the pet to favorites
+            $.ajax({
+                type: "POST",
+                url: "/Favorites/AddToFavorite",
+                data: { name: name },
+                success: function (result) {
+                    alert('Added to Favorites: ' + name);
+                },
+                error: function (error) {
+                    alert('Error adding to Favorites: ' + name);
+                }
+            });
+        }
+
+        // Attach the addToFavorites function to the button click event
+        $(document).ready(function () {
+            $('button.addToFavorites').on('click', function () {
+                // Get the pet name from the data attribute
+                var name = $(this).data('name');
+
+                // Call the addToFavorites function with the pet name
+                addToFavorites(name);
+            });
+        });
+    </script>
+}
+
+}
