@@ -67,7 +67,7 @@ namespace AnimalRefugeFinal.Controllers
                     return View(userProfile);
                 }
 
-                // If the user profile is not found, you can handle it accordingly (e.g., redirect to an error page)
+                
                 return NotFound();
             
 
@@ -108,12 +108,12 @@ namespace AnimalRefugeFinal.Controllers
         // Display a list of pets that the user has marked as favorites
         public IActionResult Favorites()
         {
-            // Add logic to fetch and display the user's favorite pets
+            //logic to fetch and display the user's favorite pets
             var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userId = int.Parse(userIdString);
+            
             var userFavorites = _context.Favorites
                 .Include(f => f.Pet)
-                .Where(f => f.UserId == userId)
+                .Where(f => f.UserId == userIdString)
                 .Select(f => f.Pet)
                 .ToList();
             return View(userFavorites);
@@ -131,12 +131,12 @@ namespace AnimalRefugeFinal.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            var userId = int.Parse(userIdString);
+            
 
             // Fetch the user's adoption applications
             var applications = _context.AdoptionApplications
                 .Include(a => a.Pets)  // Include the associated pet information
-                .Where(a => a.UserId == userId)
+                .Where(a => a.UserId == userIdString)
                 .ToList();
 
             return View(applications);

@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace AnimalRefugeFinal.Controllers
 {
-    [Authorize] // Use this attribute if only authenticated users can apply for adoption
+    [Authorize] // only authenticated users can apply for adoption
     public class AdoptionController : Controller
     {
         private readonly PetContext _context;
@@ -20,7 +20,7 @@ namespace AnimalRefugeFinal.Controllers
         [HttpGet]
         public IActionResult Apply(int petId)
         {
-            // Assuming you have a view model for the adoption application form
+           
             var viewModel = new AdoptionApplicationViewModel
             {
                 PetId = petId
@@ -40,7 +40,7 @@ namespace AnimalRefugeFinal.Controllers
 
             // Get the current user's ID
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userId = int.Parse(userIdString);
+            
 
             // Fetch the "Pending" status from the database
             var pendingStatus = _context.Statuses.FirstOrDefault(s => s.Name == "Pending");
@@ -54,7 +54,7 @@ namespace AnimalRefugeFinal.Controllers
             
             var application = new AdoptionApplication
             {
-                UserId = userId,
+                UserId = userIdString,
                 PetId = viewModel.PetId,
                 Reasons = viewModel.Reasons,
                 ApplicationDate = DateTime.Now,

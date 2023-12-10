@@ -7,7 +7,7 @@ namespace AnimalRefugeFinal.Controllers
     public class HomeController : Controller
     {
         //diplay home page
-        //
+        
         public IActionResult Index()
         {
             return View();
