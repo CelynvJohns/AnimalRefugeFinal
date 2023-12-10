@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AnimalRefugeFinal.Models
 {
@@ -6,27 +7,35 @@ namespace AnimalRefugeFinal.Models
     {
         public int Id { get; set; }
 
+        
         [Required]
+        [StringLength(50)]
         public string Name { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string Species { get; set; }
-
+        [Required]
+        [Range(0, 50)]
         public int Age { get; set; }
 
         public string BondedBuddyStatus { get; set; }
 
         [Required]
+        [StringLength(200)]
         public string Description { get; set; }
 
         public string SpecialCareInstructions { get; set; }
 
         // Navigation property for favorites
-        public ICollection<Favorite> Favorites { get; set; }
+        public ICollection<Favorite>? Favorites { get; set; }
 
         public string Reason { get; set; }
 
         public bool IsAdopted { get; set; }
+
+        // Navigation property for adoption applications
+        public ICollection<AdoptionApplication> AdoptionApplications { get; set; }
 
     }
 }

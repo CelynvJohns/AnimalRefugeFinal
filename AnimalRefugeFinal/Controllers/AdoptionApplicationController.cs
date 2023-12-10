@@ -18,7 +18,7 @@ namespace AnimalRefugeFinal.Controllers
         }
 
         [HttpGet]
-        public IActionResult ApplyForAdoption(int petId)
+        public IActionResult Apply(int petId)
         {
             // Assuming you have a view model for the adoption application form
             var viewModel = new AdoptionApplicationViewModel
@@ -30,7 +30,7 @@ namespace AnimalRefugeFinal.Controllers
         }
 
         [HttpPost]
-        public IActionResult ApplyForAdoption(AdoptionApplicationViewModel viewModel)
+        public IActionResult Apply(AdoptionApplicationViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {

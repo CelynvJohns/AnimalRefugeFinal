@@ -10,37 +10,38 @@ namespace AnimalRefugeFinal.Models
         public int UserId { get; set; }
         public User User { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your first name ")]
+        [StringLength(50)]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your last name ")]
+        [StringLength(50)]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your email address.")]
+        [StringLength(100)]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your phone number")]
+        [StringLength(12)]
         public string PhoneNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your home address")]
+        [StringLength(100)]
         public string Address { get; set; }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid number greater than 0.")]
         public int NumberOfPets { get; set; }
 
-        public Pet[] Pets { get; set; }
+        public List<Pet> Pets { get; set; }
 
         
 
 
-        public CurrentPet[] CurrentPet { get; set; } // Corrected property name to CurrentPets
-        public string CurrentPetName { get; set; }
-        public int CurrentPetAge { get; set; }
-        public int CurrentPetBreed { get; set; }
-        public string VetName { get; set; }
-        public int VetPhoneNumber { get; set; }
+        public List<CurrentPet> CurrentPet { get; set; } // Corrected property name to CurrentPets
+        
 
         [Required]
         public string Reason { get; set; }
@@ -48,12 +49,9 @@ namespace AnimalRefugeFinal.Models
         public DateTime ApplicationDate { get; set; }
 
         public int StatusId { get; set; }
-        public string Status { get; set; } // "Pending", "Approved", "Rejected"
+        public Status Status { get; set; } // "Pending", "Approved", "Rejected"
 
-        public CurrentHumans[] CurrentHumans { get; set; } // Corrected property name to Humans
-        public string CurrentHumanFirstName { get; set; }
-        public string CurrentHumanLastName { get; set; }
-        public string CurrentHumanAge { get; set; }
+        public List<CurrentHumans> CurrentHumans { get; set; } // Corrected property name to Humans
 
         public int CurrentPetNumber { get; set; }
         public int CurrentHumansNumber { get; set; }
@@ -67,32 +65,43 @@ namespace AnimalRefugeFinal.Models
 
     public class CurrentHumans
     {
-        [Required]
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Please enter first name")]
+        [StringLength(100)]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your last name")]
+        [StringLength(100)]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter age")]
+        [Range(0,130)]
         public int Age { get; set; } 
     }
 
     public class CurrentPet
     {
-        [Required]
+        public int Id {  get; set; }
+
+        [Required(ErrorMessage = "Please enter current pet name")]
+        [StringLength(50)]
         public string CurrentPetName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter current pet age")]
+        [Range(0, 40)]
         public int CurrentPetAge { get; set; }
 
-        [Required]
-        public int CurrentPetBreed { get; set; }
+        [Required(ErrorMessage = "Please enter current pet breed")]
+        [StringLength(50)]
+        public string CurrentPetBreed { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter correct vet name")]
+        [StringLength(50)]
         public string VetName { get; set; }
 
-        [Required]
-        public int VetPhoneNumber { get; set; }
+        [Required(ErrorMessage = "Please enter correct vet phone number")]
+        [StringLength(11)]
+        public string VetPhoneNumber { get; set; }
 
 
     }

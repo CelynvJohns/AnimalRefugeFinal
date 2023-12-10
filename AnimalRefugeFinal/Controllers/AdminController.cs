@@ -146,7 +146,7 @@ namespace AnimalRefugeFinal.Controllers
 
             if (userProfile != null)
             {
-                userProfile.Username = updatedUser.Username;
+                userProfile.UserName = updatedUser.UserName;
                 userProfile.FirstName = updatedUser.FirstName;
                 userProfile.LastName = updatedUser.LastName;
                 // Update other properties as needed
