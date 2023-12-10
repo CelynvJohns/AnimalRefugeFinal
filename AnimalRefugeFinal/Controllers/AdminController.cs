@@ -114,7 +114,7 @@ namespace AnimalRefugeFinal.Controllers
                 return View(userProfile);
             }
 
-            // If the user profile is not found, you can handle it accordingly (e.g., redirect to an error page)
+            
             return NotFound();
         }
 

@@ -21,8 +21,8 @@ namespace AnimalRefugeFinal.Models
             //Custom configurations for the Pet entity go here
 
             modelBuilder.Entity<Pet>().HasData(
-                new Pet { Id = 1, Name = "Fluffy", Species = "Cat", Age = 2, Description = "A cute fluffy cat." },
-                new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home." }
+                new Pet { Id = 1, Name = "Fluffy", Species = "Cat", Age = 2, Description = "A cute fluffy cat.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs exercise" },
+                new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Is diabetic"}
                 );
 
             //Other configurations or seed data go here
@@ -53,6 +53,19 @@ namespace AnimalRefugeFinal.Models
                 .HasMany(a => a.CurrentHumans)
                 .WithOne()
                 .HasForeignKey(a => a.Id);
+
+            // Configure relationship for AdoptionApplications
+            modelBuilder.Entity<AdoptionApplication>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.AdoptionApplications)
+                .HasForeignKey(a => a.UserId);
+
+            // Ensure that Identity entities are not redefined here
+            modelBuilder.Ignore<IdentityUserLogin<string>>();
+            modelBuilder.Ignore<IdentityUserRole<string>>();
+            modelBuilder.Ignore<IdentityUserClaim<string>>();
+            modelBuilder.Ignore<IdentityUserToken<string>>();
+            modelBuilder.Ignore<IdentityRoleClaim<string>>();
 
         }
 
