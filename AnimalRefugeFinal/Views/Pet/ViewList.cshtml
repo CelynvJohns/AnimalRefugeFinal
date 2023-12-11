@@ -37,37 +37,39 @@
         </div>
     </nav>
 
-    <h3>Species: <!-- You can't access Model.Species directly here, it's a list --></h3>
-    <h3>Age: <!-- Similarly, you can't access Model.Age directly --></h3>
-
-    @foreach (var pet in Model)
-    {
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="images/@(pet.Name).jpg">
-                <div class="card-body">
-                    <h5 class="card-title">@pet.Name</h5>
-                    <p class="card-text">Species: @pet.Species</p>
-                    <p class="card-text">Pet Age: @pet.Age</p>
-                    <p class="card-text">Bonded Buddy Status: @pet.BondedBuddyStatus</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <button class="addToFavorites" onclick="addToFavorites('@pet.Name')">Add to Favorites</button>
-                    </li>
-                </ul>
-                <div class="card-body">
-                    <a asp-area="" asp-controller="Pet" asp-action="Details" asp-route-id="@pet.Id">Pet Details</a>
-                </div>
-                @if (User.IsInRole("Admin"))
-                {
-                    <div class="card-body">
-                        <a asp-area="" asp-controller="Pet" asp-action="Edit" asp-route-id="@pet.Id">Edit Pet</a>
+    <div class="row">
+        @foreach (var pet in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="~/images/@(pet.Name).jpg">
+                    <div class="card-body text-center">
+                        <h5 class="card-title display-4">@pet.Name</h5>
+                        <p class="card-text h5">Species: @pet.Species</p>
+                        <p class="card-text h5">Pet Age: @pet.Age</p>
+                        <p class="card-text h5">Bonded Buddy Status: @pet.BondedBuddyStatus</p>
                     </div>
-                }
+                    <ul>
+                        <li class="list-group-item text-center">
+                            <button class="addToFavorites btn btn-primary btn-block" onclick="addToFavorites('@pet.Name')">Add to Favorites</button>
+                        </li>
+                    </ul>
+                    <div class="card-body text-center">
+                        <a asp-area="" asp-controller="Pet" asp-action="Details" asp-route-id="@pet.Id" class="btn btn-dark btn-block text-white">Pet Details</a>
+                    </div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="card-body text-center">
+                            <a asp-area="" asp-controller="Pet" asp-action="Edit" asp-route-id="@pet.Id" class="btn btn-dark btn-block text-white">Edit Pet</a>
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+
+
+
 
     @section scripts {
     <script>

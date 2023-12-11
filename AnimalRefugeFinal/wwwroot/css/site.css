@@ -24,6 +24,10 @@ body, h1, h2, p, ul, li {
     justify-content: center;
     text-align: center;
     text-shadow: 2px 2px 5px white; /* Set the white shadow */
+    background-attachment: fixed;
+    color: black;
+    /* Add flexbox styles to center content vertically and horizontally */
+    display: flex;
 }
 
 body {
