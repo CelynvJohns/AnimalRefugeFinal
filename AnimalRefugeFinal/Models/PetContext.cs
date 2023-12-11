@@ -22,14 +22,8 @@ namespace AnimalRefugeFinal.Models
 
             modelBuilder.Entity<Pet>().HasData(
                 new Pet { Id = 1, Name = "Fluffy", Species = "Cat", Age = 2, Description = "A cute fluffy cat.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs exercise" },
-                new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Is diabetic"},
-                new Pet { Id = 3, Name = "Moo", Species = "Cat", Age = 1, Description = "Bonded Buddies with Colby. An affectionate cat who meows a lot.", BondedBuddyStatus = "Colby", SpecialCareInstructions = "Has to go with Colby. Needs a good home." },
-                new Pet { Id = 4, Name = "Colby", Species = "Cat", Age = 5, Description = "Bonded Buddies with Moo. Very skitish, but loves to be pet.", BondedBuddyStatus = "Moo", SpecialCareInstructions = "Has to go with Moo. Needs a good home." },
-                new Pet { Id = 5, Name = "Juno", Species = "Bunny", Age = 10, Description = "Elderly bunny who needs a new home. Loves carrots.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs a specialized diet to maintain health." },
-                new Pet { Id = 6, Name = "Peaches", Species = "Dog", Age = 6, Description = "An affectionate dog who loves to play.", BondedBuddyStatus = "None", SpecialCareInstructions = "Requires 10 hours of play a week." },
-                new Pet { Id = 7, Name = "Olo", Species = "Dog", Age = 4, Description = "A overly affectionate dog who needs a new home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Not good with kids." },
-                new Pet { Id = 8, Name = "Daisey", Species = "Reptile", Age = 19, Description = "A turtle who loves to swim and stare at you.", BondedBuddyStatus = "None", SpecialCareInstructions = "Great with kids, needs to be with people or gets too lonely." }
-                    );
+                new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Is diabetic"}
+                );
 
             //Other configurations or seed data go here
             modelBuilder.Entity<Status>().HasData(
@@ -66,12 +60,20 @@ namespace AnimalRefugeFinal.Models
                 .WithMany(u => u.AdoptionApplications)
                 .HasForeignKey(a => a.UserId);
 
-            // Ensure that Identity entities are not redefined here
-            modelBuilder.Ignore<IdentityUserLogin<string>>();
-            modelBuilder.Ignore<IdentityUserRole<string>>();
-            modelBuilder.Ignore<IdentityUserClaim<string>>();
-            modelBuilder.Ignore<IdentityUserToken<string>>();
-            modelBuilder.Ignore<IdentityRoleClaim<string>>();
+
+            // Create the "USER" role
+            var role = new IdentityRole
+            {
+                Id = "someRoleId", // Replace with a unique identifier for the role
+                Name = "USER",
+                NormalizedName = "USER"
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+
+            base.OnModelCreating(modelBuilder);
+
+
 
         }
 
