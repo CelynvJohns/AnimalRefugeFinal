@@ -29,7 +29,7 @@ namespace AnimalRefugeFinal.Models
                 new Pet { Id = 6, Name = "Peaches", Species = "Dog", Age = 6, Description = "An affectionate dog who loves to play.", BondedBuddyStatus = "None", SpecialCareInstructions = "Requires 10 hours of play a week." },
                 new Pet { Id = 7, Name = "Olo", Species = "Dog", Age = 4, Description = "A overly affectionate dog who needs a new home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Not good with kids." },
                 new Pet { Id = 8, Name = "Daisey", Species = "Reptile", Age = 19, Description = "A turtle who loves to swim and stare at you.", BondedBuddyStatus = "None", SpecialCareInstructions = "Great with kids, needs to be with people or gets too lonely." },
-                 new Pet { Id = 9, Name = "Raven", Species = "Cat", Age = 2, Description = "enchants with her silky midnight-blue fur and eyes that gleam like twin crescent moons, exuding an aura of serene elegance and quiet wisdom.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs attention" },
+                 new Pet { Id = 9, Name = "Raven", Species = "Cat", Age = 2, Description = "enchants with her silky midnight-blue fur and eyes that gleam like twin crescent moons, exuding an aura of serene elegance and quiet wisdom.", BondedBuddyStatus = "Yoshi", SpecialCareInstructions = "Needs attention" },
                 new Pet { Id = 10, Name = "Worm", Species = "Dog", Age = 3, Description = "a gentle soul, displaying a heartwarming affection by leaning into every pat and responding to commands with a calm and eager demeanor.", BondedBuddyStatus = "None", SpecialCareInstructions = "Afraid of worms" },
                  new Pet { Id = 11, Name = "Jack", Species = "Cat", Age = 2, Description = "a calm observer, finding solace in quiet corners and displaying a gentle, affectionate nature by curling up in laps during cozy evenings.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs litter to be extra clean" },
                 new Pet { Id = 12, Name = "Inu", Species = "Dog", Age = 3, Description = "a lively bundle of joy, his tail in a perpetual state of enthusiastic wagging as he greets everyone with boundless energy.", BondedBuddyStatus = "None", SpecialCareInstructions = "Is diabetic" },
@@ -95,8 +95,10 @@ namespace AnimalRefugeFinal.Models
             UserManager<User> userManager = scoped.ServiceProvider.GetRequiredService<UserManager<User>>();
             RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+            string fname = "admin";
+            string lname = "admin";
             string username = "petadmin";
-            string pwd = "Adminpet";
+            string pwd = "Adminpet!52";
             string roleName = "Admin";
 
             // if role doesn't exist, create it
@@ -107,7 +109,8 @@ namespace AnimalRefugeFinal.Models
 
             if (await userManager.FindByNameAsync(username) == null)
             {
-                User user = new User() { UserName = username };
+                User user = new User() { UserName = username, FirstName = fname, LastName = lname };
+
                 var result = await userManager.CreateAsync(user, pwd);
                 if (result.Succeeded)
                 {
