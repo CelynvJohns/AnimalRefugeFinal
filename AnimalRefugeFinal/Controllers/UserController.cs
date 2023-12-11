@@ -5,12 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using AnimalRefugeFinal.Models.AnimalRefugeFinal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AnimalRefugeFinal.Controllers
 {
     public class UserController : Controller
     {
         private readonly PetContext _context;
+
 
         public UserController(PetContext context)
         {
@@ -22,7 +24,7 @@ namespace AnimalRefugeFinal.Controllers
             return View();
         }
 
- 
+
         // UserProfile "Profile" Action
         // Display the user's profile information
         // Allow users to edit and update their profiles
@@ -30,7 +32,7 @@ namespace AnimalRefugeFinal.Controllers
         {
             // Get the current user's ID
             var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+
 
             // Fetch the user's profile information
             var userProfile = _context.Users
@@ -52,24 +54,24 @@ namespace AnimalRefugeFinal.Controllers
         [HttpGet]
         public IActionResult EditProfile()
         {
-            
-                // Get the current user's ID
-                var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
 
-                // Fetch the user's profile information
-                var userProfile = _context.Users
-                    .Where(user => user.Id == userIdString)
-                    .FirstOrDefault();
+            // Get the current user's ID
+            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (userProfile != null)
-                {
-                    return View(userProfile);
-                }
 
-                
-                return NotFound();
-            
+            // Fetch the user's profile information
+            var userProfile = _context.Users
+                .Where(user => user.Id == userIdString)
+                .FirstOrDefault();
+
+            if (userProfile != null)
+            {
+                return View(userProfile);
+            }
+
+
+            return NotFound();
+
 
         }
 
@@ -80,7 +82,7 @@ namespace AnimalRefugeFinal.Controllers
             {
                 // Get the current user's ID
                 var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
+
 
                 // Fetch the user's profile information
                 var userProfile = _context.Users
@@ -110,7 +112,7 @@ namespace AnimalRefugeFinal.Controllers
         {
             //logic to fetch and display the user's favorite pets
             var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+
             var userFavorites = _context.Favorites
                 .Include(f => f.Pet)
                 .Where(f => f.UserId == userIdString)
@@ -131,7 +133,7 @@ namespace AnimalRefugeFinal.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            
+
 
             // Fetch the user's adoption applications
             var applications = _context.AdoptionApplications
@@ -141,8 +143,8 @@ namespace AnimalRefugeFinal.Controllers
 
             return View(applications);
 
-        }
 
+        }
     }
 }
 

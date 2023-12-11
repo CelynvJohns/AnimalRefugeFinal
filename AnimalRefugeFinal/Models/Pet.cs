@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AnimalRefugeFinal.Models
@@ -7,7 +8,6 @@ namespace AnimalRefugeFinal.Models
     {
         public int Id { get; set; }
 
-        
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
@@ -15,6 +15,7 @@ namespace AnimalRefugeFinal.Models
         [Required]
         [StringLength(50)]
         public string Species { get; set; }
+
         [Required]
         [Range(0, 50)]
         public int Age { get; set; }
@@ -34,8 +35,5 @@ namespace AnimalRefugeFinal.Models
 
         // Navigation property for adoption applications
         public ICollection<AdoptionApplication> AdoptionApplications { get; set; }
-
-        public List<Pet> Pets { get; set; }
-
     }
 }

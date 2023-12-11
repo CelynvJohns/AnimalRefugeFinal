@@ -73,8 +73,8 @@ namespace AnimalRefugeFinal.Controllers
                     model.Username, model.Password, isPersistent: model.RememberMe,
                     lockoutOnFailure: false);
 
-                if (result.Succeeded) 
-                { 
+                if (result.Succeeded)
+                {
                     if (!string.IsNullOrEmpty(model.ReturnURL) &&
                         Url.IsLocalUrl(model.ReturnURL))
                     {
@@ -89,6 +89,7 @@ namespace AnimalRefugeFinal.Controllers
             ModelState.AddModelError("", "Invalid username/password.");
             return View(model);
         }
+
 
         public ViewResult AccessDenied()
         {

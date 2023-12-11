@@ -1,31 +1,31 @@
-﻿@model AnimalRefugeFinal.Models.Pet
+﻿@model List<AnimalRefugeFinal.Models.Pet>
 <h2>Animals for Adoption</h2>
 
-@using (Html.BeginForm("List", "Pet", FormMethod.Get, new { id = "formId" }))
+@using (Html.BeginForm("ViewList", "Pet", FormMethod.Get, new { id = "formId" }))
 {
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <form class="d-flex">
                     <div class="nav-item">
-                        @Html.LabelFor(model => model.Species, "Filter by Species:", new { @class = "nav-link" })
-                        @Html.DropDownListFor(model => model.Species, new List<SelectListItem>
+                        @Html.Label("Filter by Species:", "pet.Species", new { @class = "nav-link" })
+                        @Html.DropDownList("Species", new List<SelectListItem>
                     {
                     new SelectListItem { Text = "Dog", Value = "Dog" },
                     new SelectListItem { Text = "Cat", Value = "Cat" },
                     new SelectListItem { Text = "Rabbit", Value = "Rabbit" },
                     new SelectListItem { Text = "Reptile", Value = "Reptile" },
-                    new SelectListItem { Text = "Bunny", Value = "Bunny" }
+                    new SelectListItem { Text = "Bunny", Value = "Bunny" },
                     }, "Select a Species", new { @class = "nav-link", id = "species" })
                     </div>
 
                     <div class="nav-item">
-                        @Html.LabelFor(model => model.Age, "Filter by Age:", new { @class = "nav-link" })
-                        @Html.DropDownListFor(model => model.Age, new List<SelectListItem>
+                        @Html.Label("Filter by Age:", "pet.Age", new { @class = "nav-link" })
+                        @Html.DropDownList("Age", new List<SelectListItem>
                     {
                     new SelectListItem { Text = "Young", Value = "0-5" },
                     new SelectListItem { Text = "Middle age", Value = "6-10" },
-                    new SelectListItem { Text = "Elder", Value = "11-50" }
+                    new SelectListItem { Text = "Elder", Value = "11-50" },
                     }, new { @class = "nav-link", onchange = "filterByAge(this.value);" })
                     </div>
 
@@ -37,11 +37,10 @@
         </div>
     </nav>
 
+    <h3>Species: <!-- You can't access Model.Species directly here, it's a list --></h3>
+    <h3>Age: <!-- Similarly, you can't access Model.Age directly --></h3>
 
-    <h3>Species: @Model.Species</h3>
-    <h3>Age: @Model.Age</h3>
-
-    @foreach (var pet in Model.Pets)
+    @foreach (var pet in Model)
     {
         <div class="col-md-4">
             <div class="card" style="width: 18rem;">
@@ -54,7 +53,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <button onclick="addToFavorites('@pet.Name')">Add to Favorites</button>
+                        <button class="addToFavorites" onclick="addToFavorites('@pet.Name')">Add to Favorites</button>
                     </li>
                 </ul>
                 <div class="card-body">
@@ -63,12 +62,13 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <div class="card-body">
-                        <a asp-area="" asp-controller="Pet" asp-action="Edit" asp-route-id="@Model.Id">Edit Pet</a>
+                        <a asp-area="" asp-controller="Pet" asp-action="Edit" asp-route-id="@pet.Id">Edit Pet</a>
                     </div>
                 }
             </div>
         </div>
     }
+
     @section scripts {
     <script>
         // Define the addToFavorites function
@@ -98,6 +98,5 @@
             });
         });
     </script>
-}
-
+    }
 }
