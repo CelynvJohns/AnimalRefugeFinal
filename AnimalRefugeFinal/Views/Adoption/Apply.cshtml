@@ -93,27 +93,25 @@
         <label asp-for="NumberOfPets">Number of Pets You are looking to Adopt:</label>
         <input asp-for="NumberOfPets" type="number" min="1" id="numberOfPets" />
     </div>
-
     <!-- STILL NEED TO FIGURE OUT HOW TO MAKE THIS WORK, PROBABLY WILL NEED TO USE SESSIONS-->
     @for (int i = 1; i <= Model.NumberOfPets; i++)
     {
-        <div id="petsContainer">
+        <div class="petContainer">
             <label asp-for="Pets[i].Name">Pet Name @i:</label>
             <input asp-for="Pets[i].Name" />
-
         </div>
     }
 
-    
-        <div>
-            <label asp-for="CurrentPetNumber">Current Pets you have at Home:</label>
-            <input asp-for="CurrentPetNumber" type="number" id="CurrentPetNumber" />
-        </div>
+    <div>
+        <label asp-for="CurrentPetNumber">Current Pets you have at Home:</label>
+        <input asp-for="CurrentPetNumber" type="number" id="CurrentPetNumber" />
+    </div>
+
     @for (int i = 1; i <= Model.CurrentPetNumber; i++)
     {
-        <div id="CurrentPetContainer">
+        <div class="currentPetContainer">
             <label asp-for="CurrentPet[i].CurrentPetName"> Current Pet Name @i:</label>
-            <input asp-for="CurrentPet[i].CurrentPetName"/>
+            <input asp-for="CurrentPet[i].CurrentPetName" />
             <label asp-for="CurrentPet[i].CurrentPetAge">Current Pet Age @i:</label>
             <input asp-for="CurrentPet[i].CurrentPetAge" />
             <label asp-for="CurrentPet[i].CurrentPetBreed">Current Pet Breed @i:</label>
@@ -122,14 +120,15 @@
             <input asp-for="CurrentPet[i].VetName" />
             <label asp-for="CurrentPet[i].VetPhoneNumber">Current Vet Phone Number @i:</label>
             <input asp-for="CurrentPet[i].VetPhoneNumber" />
-
         </div>
     }
+
     <div>
         <label asp-for="CurrentHumansNumber">Current number of Family members in your House:</label>
         <input asp-for="CurrentHumansNumber" type="number" id="CurrentHumansNumber" />
     </div>
-    @for (int i = 1; i < Model.CurrentHumansNumber; i++) 
+
+    @for (int i = 1; i <= Model.CurrentHumansNumber; i++)
     {
         <div class="currentHumanContainer">
             <label asp-for="CurrentHumans[i].FirstName"> Family member First Name @i:</label>
@@ -141,9 +140,6 @@
         </div>
     }
 
-
-
-
     <div>
         <button type="submit">Submit Application</button>
     </div>
@@ -151,153 +147,47 @@
 @section scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var numberOfPetsInput = document.getElementById("numberOfPets");
-            var petsContainer = document.getElementById("petsContainer");
+            // Function to update fields based on the number entered
+            function updateFields(inputId, containerId, fieldLabel, fieldName) {
+                var input = document.getElementById(inputId);
+                var container = document.getElementById(containerId);
 
-            numberOfPetsInput.addEventListener("change", function () {
-                updatePetFields();
-            });
+                input.addEventListener("change", function () {
+                    updateFieldsContent();
+                });
 
-            function updatePetFields() {
-                var numberOfPets = parseInt(numberOfPetsInput.value, 10);
+                function updateFieldsContent() {
+                    var number = parseInt(input.value, 10);
 
-                // Clear existing pet fields
-                petsContainer.innerHTML = "";
+                    // Clear existing fields
+                    container.innerHTML = "";
 
-                // Add new pet fields based on the number entered
-                for (var i = 1; i <= numberOfPets; i++) {
-                    var petNameLabel = document.createElement("label");
-                    petNameLabel.innerText = "Pet Name " + i + ":";
-                    petsContainer.appendChild(petNameLabel);
+                    // Add new fields based on the number entered
+                    for (var i = 0; i < number; i++) {
+                        var fieldContainer = document.createElement("div");
+                        fieldContainer.classList.add(containerId);
 
-                    var petNameInput = document.createElement("input");
-                    petNameInput.setAttribute("name", "Pets[" + (i - 1) + "].Name");
-                    petsContainer.appendChild(petNameInput);
+                        var fieldLabelElement = document.createElement("label");
+                        fieldLabelElement.innerText = fieldLabel + " " + (i + 1) + ":";
+                        fieldContainer.appendChild(fieldLabelElement);
 
-                    var petReasonLabel = document.createElement("label");
-                    petReasonLabel.innerText = "Why do you want to adopt this pet?";
-                    petsContainer.appendChild(petReasonLabel);
+                        var fieldInput = document.createElement("input");
+                        fieldInput.setAttribute("name", fieldName.replace("[i]", "[" + i + "]"));
+                        fieldContainer.appendChild(fieldInput);
 
-                    var petReasonTextarea = document.createElement("textarea");
-                    petReasonTextarea.setAttribute("name", "Pets[" + (i - 1) + "].Reason");
-                    petsContainer.appendChild(petReasonTextarea);
-
-                    var div = document.createElement("div");
-                    petsContainer.appendChild(div);
+                        container.appendChild(fieldContainer);
+                    }
                 }
+
+                // Initial update
+                updateFieldsContent();
             }
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Script for updating fields related to 'CurrentPet'
-            var currentPetNumberInput = document.getElementById("CurrentPetNumber");
-            var currentPetContainer = document.getElementById("CurrentPetContainer");
 
-            currentPetNumberInput.addEventListener("change", function () {
-                updateCurrentPetFields();
-            });
+            // Update fields for CurrentPets
+            updateFields("CurrentPetNumber", "CurrentPetContainer", "Current Pet", "CurrentPet[i].");
 
-            function updateCurrentPetFields() {
-                var currentPetNumber = parseInt(currentPetNumberInput.value, 10);
-
-                // Clear existing current pet fields
-                currentPetContainer.innerHTML = "";
-
-                // Add new current pet fields based on the number entered
-                for (var i = 0; i < currentPetNumber; i++) {
-                    var currentPetNameLabel = document.createElement("label");
-                    currentPetNameLabel.innerText = "Current Pet Name " + i + ":";
-                    currentPetContainer.appendChild(currentPetNameLabel);
-
-                    var currentPetNameInput = document.createElement("input");
-                    currentPetNameInput.setAttribute("name", "CurrentPet[" + i + "].CurrentPetName");
-                    currentPetContainer.appendChild(currentPetNameInput);
-
-                    var currentPetAgeLabel = document.createElement("label");
-                    currentPetAgeLabel.innerText = "Current Pet Age " + i + ":";
-                    currentPetContainer.appendChild(currentPetAgeLabel);
-
-                    var currentPetAgeInput = document.createElement("input");
-                    currentPetAgeInput.setAttribute("name", "CurrentPet[" + i + "].CurrentPetAge");
-                    currentPetContainer.appendChild(currentPetAgeInput);
-
-                    var currentPetBreedLabel = document.createElement("label");
-                    currentPetBreedLabel.innerText = "Current Pet Breed " + i + ":";
-                    currentPetContainer.appendChild(currentPetBreedLabel);
-
-                    var currentPetBreedInput = document.createElement("input");
-                    currentPetBreedInput.setAttribute("name", "CurrentPet[" + i + "].CurrentPetBreed");
-                    currentPetContainer.appendChild(currentPetBreedInput);
-
-                    var vetNameLabel = document.createElement("label");
-                    vetNameLabel.innerText = "Current Vet " + i + ":";
-                    currentPetContainer.appendChild(vetNameLabel);
-
-                    var vetNameInput = document.createElement("input");
-                    vetNameInput.setAttribute("name", "CurrentPet[" + i + "].VetName");
-                    currentPetContainer.appendChild(vetNameInput);
-
-                    var vetPhoneNumberLabel = document.createElement("label");
-                    vetPhoneNumberLabel.innerText = "Current Vet Phone Number " + i + ":";
-                    currentPetContainer.appendChild(vetPhoneNumberLabel);
-
-                    var vetPhoneNumberInput = document.createElement("input");
-                    vetPhoneNumberInput.setAttribute("name", "CurrentPet[" + i + "].VetPhoneNumber");
-                    currentPetContainer.appendChild(vetPhoneNumberInput);
-
-                    var div = document.createElement("div");
-                    currentPetContainer.appendChild(div);
-                }
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Script for updating fields related to 'CurrentHumans'
-            var currentHumansNumberInput = document.getElementById("CurrentHumansNumber");
-            var currentHumansContainer = document.getElementById("currentHumansContainer");
-
-            currentHumansNumberInput.addEventListener("change", function () {
-                updateCurrentHumansFields();
-            });
-
-            function updateCurrentHumansFields() {
-                var currentHumansNumber = parseInt(currentHumansNumberInput.value, 10);
-
-                // Clear existing current humans fields
-                currentHumansContainer.innerHTML = "";
-
-                // Add new current humans fields based on the number entered
-                for (var i = 0; i < currentHumansNumber; i++) {
-                    var firstNameLabel = document.createElement("label");
-                    firstNameLabel.innerText = "Family member First Name " + i + ":";
-                    currentHumansContainer.appendChild(firstNameLabel);
-
-                    var firstNameInput = document.createElement("input");
-                    firstNameInput.setAttribute("name", "CurrentHumans[" + i + "].FirstName");
-                    currentHumansContainer.appendChild(firstNameInput);
-
-                    var lastNameLabel = document.createElement("label");
-                    lastNameLabel.innerText = "Family member Last Name " + i + ":";
-                    currentHumansContainer.appendChild(lastNameLabel);
-
-                    var lastNameInput = document.createElement("input");
-                    lastNameInput.setAttribute("name", "CurrentHumans[" + i + "].LastName");
-                    currentHumansContainer.appendChild(lastNameInput);
-
-                    var ageLabel = document.createElement("label");
-                    ageLabel.innerText = "Family member Age " + i + ":";
-                    currentHumansContainer.appendChild(ageLabel);
-
-                    var ageInput = document.createElement("input");
-                    ageInput.setAttribute("name", "CurrentHumans[" + i + "].Age");
-                    currentHumansContainer.appendChild(ageInput);
-
-                    var div = document.createElement("div");
-                    currentHumansContainer.appendChild(div);
-                }
-            }
+            // Update fields for CurrentHumans
+            updateFields("CurrentHumansNumber", "currentHumanContainer", "Family member", "CurrentHumans[i].");
         });
     </script>
 

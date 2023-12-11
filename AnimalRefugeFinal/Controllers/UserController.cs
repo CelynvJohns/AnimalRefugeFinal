@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace AnimalRefugeFinal.Controllers
 {
@@ -75,18 +76,38 @@ namespace AnimalRefugeFinal.Controllers
             return View(editedUser);
         }
 
-        public IActionResult Favorites()
+        public IActionResult Favorites(string species = "All")
         {
             var userId = _userManager.GetUserId(HttpContext.User);
 
-            var userFavorites = _context.Favorites
+            var favorites = _context.Favorites
                 .Include(f => f.Pet)
                 .Where(f => f.UserId == userId)
                 .Select(f => f.Pet)
                 .ToList();
 
-            return View(userFavorites);
+            // Filter favorites by species
+            if (species != "All")
+            {
+                favorites = favorites.Where(p => p.Species == species).ToList();
+            }
+
+            // Initialize PetListViewModel
+            var petListViewModel = new PetListViewModel
+            {
+                Pets = favorites,
+            };
+
+            // Set the 'Species' property after initializing 'petListViewModel'
+            petListViewModel.Species = petListViewModel.GetDistinctSpecies();
+
+            return View(petListViewModel);
         }
+
+
+
+
+
 
         public IActionResult TrackApplications()
         {
@@ -105,5 +126,18 @@ namespace AnimalRefugeFinal.Controllers
             return View(applications);
         }
 
+        // Add this method to your controller
+        private List<string> GetDistinctSpecies(List<Pet> pets)
+        {
+            // Implement the logic to get distinct species from your Pets list
+            // Assuming Pet has a property called Species
+
+            var distinctSpecies = pets.Select(p => p.Species).Distinct().ToList();
+
+            // Insert "All" at the beginning of the list
+            distinctSpecies.Insert(0, "All");
+
+            return distinctSpecies;
+        }
     }
 }

@@ -1,11 +1,10 @@
 ﻿namespace AnimalRefugeFinal.Models
 {
-    public class PetListViewModel : PetViewModel
+    public class PetListViewModel
     {
         public List<Pet> Pets { get; set; }
+        private List<string> species;  // Declare species field
 
-        // Make the next property a standard property so the setter can make the first item in the list "All"
-        private List<string> species;
         public List<string> Species
         {
             get => species;
@@ -19,5 +18,21 @@
         // Method to help the view determine the active link
         public string CheckActiveSpecies(string s) =>
             s.ToLower() == ActiveSpecies.ToLower() ? "active" : "";
+
+        // Add this method to PetListViewModel
+        public List<string> GetDistinctSpecies()
+        {
+            // Implement the logic to get distinct species from your Pets list
+            // Assuming Pet has a property called Species
+
+            var distinctSpecies = Pets?.Select(p => p.Species).Distinct().ToList() ?? new List<string>();
+
+            // Insert "All" at the beginning of the list
+            distinctSpecies.Insert(0, "All");
+
+            return distinctSpecies;
+        }
+
+        public string ActiveSpecies { get; set; } = "all";
     }
 }

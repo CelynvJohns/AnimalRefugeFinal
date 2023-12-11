@@ -5,6 +5,8 @@
 <div>
     <label for="speciesDropdown">Filter by Species:</label>
     <select id="speciesDropdown" onchange="location = this.value;">
+        <option value="@Url.Action("Favorites", new { species = "All" })"
+                class="@Model.CheckActiveSpecies("All")">All</option>
         @foreach (var species in Model.Species)
         {
             <option value="@Url.Action("Favorites", new { species = species })"
@@ -15,10 +17,37 @@
     </select>
 </div>
 
-<ul>
-    @foreach (var pet in Model.Pets)
-    {
-        <li>@pet.Name - @pet.Description</li>
-        <!-- Add more details as needed -->
-    }
-</ul>
+@if (Model.Pets.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Species</th>
+                <th>Age</th>
+                <th>Bonded Buddy Status</th>
+                <th>Description</th>
+                <th>Special Care Instructions</th>
+                <!-- Add more headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pet in Model.Pets)
+            {
+                <tr>
+                    <td>@pet.Name</td>
+                    <td>@pet.Species</td>
+                    <td>@pet.Age</td>
+                    <td>@pet.BondedBuddyStatus</td>
+                    <td>@pet.Description</td>
+                    <td>@pet.SpecialCareInstructions</td>
+                    <!-- Add more cells as needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No favorite pets available.</p>
+}

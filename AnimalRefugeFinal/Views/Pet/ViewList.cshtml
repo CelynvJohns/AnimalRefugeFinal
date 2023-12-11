@@ -52,7 +52,7 @@
                     </div>
                     <ul>
                         <li class="list-group-item text-center">
-                            <button class="addToFavorites btn btn-primary btn-block" onclick="addToFavorites('@pet.Name')">Add to Favorites</button>
+                        <button class="addToFavorites btn btn-primary btn-block" data-name="@pet.Name">Add to Favorites</button>
                         </li>
                     </ul>
                     <div class="card-body text-center">
@@ -89,6 +89,7 @@
                 }
             });
         }
+
 
         // Attach the addToFavorites function to the button click event
         $(document).ready(function () {

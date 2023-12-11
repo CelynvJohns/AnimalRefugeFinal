@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace AnimalRefugeFinal.Models
@@ -40,15 +41,17 @@ namespace AnimalRefugeFinal.Models
         // Extension method to set the user's favorite pets in the session
         public void SetUserFavorites(List<Pet> favoritePets)
         {
-            // Use SetObject() extension method to store the user's favorite pets in session state
-            session.SetObject(FavoritesKey, favoritePets);
+            // Serialize the list of pets to JSON and store it in session
+            var favoritesJson = JsonConvert.SerializeObject(favoritePets);
+            session.SetString(FavoritesKey, favoritesJson);
         }
 
         // Extension method to get the user's favorite pets from the session
         public List<Pet> GetUserFavorites()
         {
-            // Use GetObject() extension method to retrieve the user's favorite pets from session state
-            var favoritePets = session.GetObject<List<Pet>>(FavoritesKey);
+            // Retrieve the serialized JSON string from session and deserialize it
+            var favoritesJson = session.GetString(FavoritesKey);
+            var favoritePets = JsonConvert.DeserializeObject<List<Pet>>(favoritesJson);
             return favoritePets ?? new List<Pet>();
         }
 
@@ -60,6 +63,3 @@ namespace AnimalRefugeFinal.Models
         }
     }
 }
-
-
-
