@@ -92,7 +92,7 @@ namespace AnimalRefugeFinal.Models
             RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string username = "petadmin";
-            string pwd = "adminpet";
+            string pwd = "adminpetabcd";
             string roleName = "Admin";
 
             // if role doesn't exist, create it
