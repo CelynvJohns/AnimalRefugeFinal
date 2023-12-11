@@ -76,14 +76,7 @@ namespace AnimalRefugeFinal.Models
                 .HasForeignKey(a => a.UserId);
 
 
-            // Create the "USER" role
-            var role = new IdentityRole
-            {
-                Id = "someRoleId", // Replace with a unique identifier for the role
-                Name = "USER",
-                NormalizedName = "USER"
-            };
-            modelBuilder.Entity<IdentityRole>().HasData(role);
+            
 
 
             base.OnModelCreating(modelBuilder);
