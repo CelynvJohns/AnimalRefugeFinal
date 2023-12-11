@@ -1,40 +1,24 @@
-﻿@model List<AnimalRefugeFinal.Models.AdoptionApplication>
-
-@{
-    ViewData["Title"] = "Track Applications";
-}
-
-<h1>Track Applications</h1>
-
-@if (Model.Count > 0)
+﻿@foreach (var application in Model)
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Application ID</th>
-                <th>User Name</th>
-                <th>Pet Name</th>
-                <th>Status</th>
-                <th>Submission Date</th>
-         
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var application in Model)
+    <tr>
+        <td>@application.Id</td>
+        <td>@application.User.UserName</td>
+        <td>
+            @if (application.Pets != null && application.Pets.Any())
             {
-                <tr>
-                    <td>@application.Id</td>
-                    <td>@application.User.UserName</td>
-                    <td>@application.Pet.Name</td>
-                    <td>@application.Status.Name</td>
-                    <td>@application.ApplicationDate</td>
-                    <!-- Add other columns as needed -->
-                </tr>
+                foreach (var pet in application.Pets)
+                {
+                    <span>@pet.Name</span>
+                    <br />
+                }
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No adoption applications found.</p>
+            else
+            {
+                <span>No Pets</span>
+            }
+        </td>
+        <td>@application.Status.Name</td>
+        <td>@application.ApplicationDate</td>
+        <!-- Add other columns as needed -->
+    </tr>
 }
