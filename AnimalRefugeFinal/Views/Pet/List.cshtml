@@ -20,15 +20,6 @@
                     </div>
 
                     <div class="nav-item">
-                        @Html.LabelFor(model => model.BondedBuddyStatus, "Filter by Bonded Buddy Status:", new { @class = "nav-link" })
-                        @Html.DropDownListFor(model => model.BondedBuddyStatus, new List<SelectListItem>
-                    {
-                    new SelectListItem { Text = "bonded", Value = "bonded" },
-                    new SelectListItem { Text = "not bonded", Value = "not-bonded" }
-                    }, new { @class = "nav-link" })
-                    </div>
-
-                    <div class="nav-item">
                         @Html.LabelFor(model => model.Age, "Filter by Age:", new { @class = "nav-link" })
                         @Html.DropDownListFor(model => model.Age, new List<SelectListItem>
                     {
@@ -48,7 +39,6 @@
 
 
     <h3>Species: @Model.Species</h3>
-    <h3>Bonded-Buddy Status: @Model.BondedBuddyStatus</h3>
     <h3>Age: @Model.Age</h3>
 
     @foreach (var pet in Model.Pets)
