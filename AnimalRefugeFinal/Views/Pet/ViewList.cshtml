@@ -1,32 +1,31 @@
 ﻿@model List<AnimalRefugeFinal.Models.Pet>
 <h2>Animals for Adoption</h2>
 
-@using (Html.BeginForm("ViewList", "Pet", FormMethod.Get, new { id = "formId" }))
+@using (Html.BeginForm("Filter", "Pet", FormMethod.Get, new { id = "formId" }))
 {
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <form class="d-flex">
                     <div class="nav-item">
-                        @Html.Label("Filter by Species:", "pet.Species", new { @class = "nav-link" })
-                        @Html.DropDownList("Species", new List<SelectListItem>
+                        @Html.Label("Filter by Species:", "species", new { @class = "nav-link" })
+                        @Html.DropDownList("species", new List<SelectListItem>
                     {
                     new SelectListItem { Text = "Dog", Value = "Dog" },
                     new SelectListItem { Text = "Cat", Value = "Cat" },
-                    new SelectListItem { Text = "Rabbit", Value = "Rabbit" },
-                    new SelectListItem { Text = "Reptile", Value = "Reptile" },
-                    new SelectListItem { Text = "Bunny", Value = "Bunny" },
+                    // Add other species options
                     }, "Select a Species", new { @class = "nav-link", id = "species" })
                     </div>
 
                     <div class="nav-item">
-                        @Html.Label("Filter by Age:", "pet.Age", new { @class = "nav-link" })
-                        @Html.DropDownList("Age", new List<SelectListItem>
+                        @Html.Label("Filter by Age:", "ageRange", new { @class = "nav-link" })
+                        @Html.DropDownList("ageRange", new List<SelectListItem>
                     {
                     new SelectListItem { Text = "Young", Value = "0-5" },
                     new SelectListItem { Text = "Middle age", Value = "6-10" },
                     new SelectListItem { Text = "Elder", Value = "11-50" },
-                    }, new { @class = "nav-link", onchange = "filterByAge(this.value);" })
+                    // Add other age range options
+                    }, new { @class = "nav-link" })
                     </div>
 
                     <div class="nav-item">
@@ -36,6 +35,8 @@
             </div>
         </div>
     </nav>
+}
+
 
     <div class="row">
         @foreach (var pet in Model)
