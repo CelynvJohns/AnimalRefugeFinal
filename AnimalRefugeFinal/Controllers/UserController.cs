@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AnimalRefugeFinal.Models;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using AnimalRefugeFinal.Models.AnimalRefugeFinal.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AnimalRefugeFinal.Controllers
 {
     public class UserController : Controller
     {
         private readonly PetContext _context;
+        private readonly UserManager<User> _userManager;
 
-
-        public UserController(PetContext context)
+        public UserController(PetContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -24,131 +24,86 @@ namespace AnimalRefugeFinal.Controllers
             return View();
         }
 
-
-        // UserProfile "Profile" Action
-        // Display the user's profile information
-        // Allow users to edit and update their profiles
-        // UserProfile "Profile" Action
-        // Display the user's profile information
-        // Allow only authenticated users to access this action
         [Authorize]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            // Get the current user's ID
-            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            // Fetch the user's profile information
-            var userProfile = _context.Users
-                .Where(user => user.Id == userIdString)
-                .FirstOrDefault();
-
-            if (userProfile != null)
+            if (user != null)
             {
-                return View(userProfile);
+                return View(user);
             }
 
-            // If the user profile is not found, redirect to the login page
             return RedirectToAction("Login", "User");
         }
 
-
-        // EditProfile Action
-        // Display a form for editing the user's profile
-        // Handle POST request to update the user's profile
         [HttpGet]
-        public IActionResult EditProfile()
+        public async Task<IActionResult> EditProfile()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            // Get the current user's ID
-            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
-            // Fetch the user's profile information
-            var userProfile = _context.Users
-                .Where(user => user.Id == userIdString)
-                .FirstOrDefault();
-
-            if (userProfile != null)
+            if (user != null)
             {
-                return View(userProfile);
+                return View(user);
             }
 
-
             return NotFound();
-
-
         }
 
         [HttpPost]
-        public IActionResult EditProfile(User editedUser)
+        public async Task<IActionResult> EditProfile(User editedUser)
         {
             if (ModelState.IsValid)
             {
-                // Get the current user's ID
-                var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.GetUserAsync(HttpContext.User);
 
+                if (user != null)
+                {
+                    user.UserName = editedUser.UserName;
+                    user.Email = editedUser.Email;
+                    user.FirstName = editedUser.FirstName;
+                    user.LastName = editedUser.LastName;
 
-                // Fetch the user's profile information
-                var userProfile = _context.Users
-                    .Where(user => user.Id == userIdString)
-                    .FirstOrDefault();
+                    await _userManager.UpdateAsync(user);
 
-                // Update the user's profile information
-                userProfile.UserName = editedUser.UserName;
-                userProfile.PasswordHash = editedUser.PasswordHash;
-                userProfile.FirstName = editedUser.FirstName;
-                userProfile.LastName = editedUser.LastName;
+                    return RedirectToAction("Profile");
+                }
 
-
-                _context.SaveChanges();
-
-                // Redirect to the user's profile after successful profile update
-                return RedirectToAction("Profile");
+                return NotFound();
             }
 
-            // If profile update fails, return to the edit profile page with errors
             return View(editedUser);
         }
 
-        // Favorites Action
-        // Display a list of pets that the user has marked as favorites
         public IActionResult Favorites()
         {
-            //logic to fetch and display the user's favorite pets
-            var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _userManager.GetUserId(HttpContext.User);
 
             var userFavorites = _context.Favorites
                 .Include(f => f.Pet)
-                .Where(f => f.UserId == userIdString)
+                .Where(f => f.UserId == userId)
                 .Select(f => f.Pet)
                 .ToList();
+
             return View(userFavorites);
         }
 
-        //List of user's adoptiona applications
         public IActionResult TrackApplications()
         {
-            // Get the current user's ID
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _userManager.GetUserId(HttpContext.User);
 
-            if (userIdString == null)
+            if (userId == null)
             {
-                // Handle the case where the user is not authenticated
                 return RedirectToAction("Login", "User");
             }
 
-
-
-            // Fetch the user's adoption applications
             var applications = _context.AdoptionApplications
-                .Include(a => a.Pets)  // Include the associated pet information
-                .Where(a => a.UserId == userIdString)
+                .Include(a => a.Pets)
+                .Where(a => a.UserId == userId)
                 .ToList();
 
             return View(applications);
-
-
         }
+
     }
 }
-

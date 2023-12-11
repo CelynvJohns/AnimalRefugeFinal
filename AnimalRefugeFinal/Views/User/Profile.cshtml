@@ -1,23 +1,25 @@
 ﻿<div class="user-profile">
     <div class="profile-field">
-        <asp:Label ID="UserName" runat="server" Text="Username: " CssClass="field-label"></asp:Label>
-        <!-- Display the actual username here -->
+        <label for="UserNameValue" class="field-label">Username: </label>
+        <span id="UserNameValue">@Model.UserName</span>
     </div>
 
     <div class="profile-field">
-        <asp:Label ID="Email" runat="server" Text="Email: " CssClass="field-label"></asp:Label>
-        <!-- Display the actual email here -->
+        <label for="EmailValue" class="field-label">Email: </label>
+        <span id="EmailValue">@Model.Email</span>
     </div>
 
     <div class="profile-field">
-        <asp:Label ID="FirstName" runat="server" Text="First Name: " CssClass="field-label"></asp:Label>
-        <!-- Display the actual first name here -->
+        <label for="FirstNameValue" class="field-label">First Name: </label>
+        <span id="FirstNameValue">@Model.FirstName</span>
     </div>
 
     <div class="profile-field">
-        <asp:Label ID="LastName" runat="server" Text="Last Name: " CssClass="field-label"></asp:Label>
-        <!-- Display the actual last name here -->
+        <label for="LastNameValue" class="field-label">Last Name: </label>
+        <span id="LastNameValue">@Model.LastName</span>
     </div>
 
-    <asp:Button ID="btnEditProfile" runat="server" Text="Edit Profile" OnClick="btnEditProfile_Click" CssClass="edit-button" />
+    <form asp-area="" asp-controller="User" asp-action="EditProfile" method="get">
+        <button type="submit" class="btn btn-dark btn-block text-white edit-button">Edit Profile</button>
+    </form>
 </div>
