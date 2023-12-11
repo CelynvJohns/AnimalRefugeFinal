@@ -16,8 +16,8 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AnimalRefugeFinal</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -30,6 +30,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pet" asp-action="ViewList">List of Pets</a>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div>
+                                    <a class="nav-link text-dark admin-link" asp-area="" asp-controller="Admin" asp-action="ManagePet">Manage pets</a>
+                                    <a class="nav-link text-dark admin-link" asp-area="" asp-controller="Admin" asp-action="ManageUsers">Manage users</a>
+                                    <a class="nav-link text-dark admin-link" asp-area="" asp-controller="Admin" asp-action="ManageApplications">Manage applications</a>
+                                </div>
+                            }
                         </li>
                     </ul>
                 </div>
