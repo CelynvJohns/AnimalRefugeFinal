@@ -28,11 +28,14 @@ namespace AnimalRefugeFinal.Controllers
         // UserProfile "Profile" Action
         // Display the user's profile information
         // Allow users to edit and update their profiles
+        // UserProfile "Profile" Action
+        // Display the user's profile information
+        // Allow only authenticated users to access this action
+        [Authorize]
         public IActionResult Profile()
         {
             // Get the current user's ID
             var userIdString = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
 
             // Fetch the user's profile information
             var userProfile = _context.Users
@@ -44,9 +47,10 @@ namespace AnimalRefugeFinal.Controllers
                 return View(userProfile);
             }
 
-            // If the user profile is not found, you can handle it accordingly (e.g., redirect to an error page)
-            return NotFound();
+            // If the user profile is not found, redirect to the login page
+            return RedirectToAction("Login", "User");
         }
+
 
         // EditProfile Action
         // Display a form for editing the user's profile
