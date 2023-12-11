@@ -23,8 +23,12 @@ namespace AnimalRefugeFinal.Models
             modelBuilder.Entity<Pet>().HasData(
                 new Pet { Id = 1, Name = "Fluffy", Species = "Cat", Age = 2, Description = "A cute fluffy cat.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs exercise" },
                 new Pet { Id = 2, Name = "Buddy", Species = "Dog", Age = 3, Description = "A friendly dog looking for a home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Is diabetic"},
-                // pets 3-8 murdered :( (they're still in the database but not here, it's a okay tho)
-                // These need to be ADDED to the DB
+                new Pet { Id = 3, Name = "Moo", Species = "Cat", Age = 1, Description = "Bonded Buddies with Colby. An affectionate cat who meows a lot.", BondedBuddyStatus = "Colby", SpecialCareInstructions = "Has to go with Colby. Needs a good home." },
+                new Pet { Id = 4, Name = "Colby", Species = "Cat", Age = 5, Description = "Bonded Buddies with Moo. Very skitish, but loves to be pet.", BondedBuddyStatus = "Moo", SpecialCareInstructions = "Has to go with Moo. Needs a good home." },
+                new Pet { Id = 5, Name = "Juno", Species = "Bunny", Age = 10, Description = "Elderly bunny who needs a new home. Loves carrots.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs a specialized diet to maintain health." },
+                new Pet { Id = 6, Name = "Peaches", Species = "Dog", Age = 6, Description = "An affectionate dog who loves to play.", BondedBuddyStatus = "None", SpecialCareInstructions = "Requires 10 hours of play a week." },
+                new Pet { Id = 7, Name = "Olo", Species = "Dog", Age = 4, Description = "A overly affectionate dog who needs a new home.", BondedBuddyStatus = "None", SpecialCareInstructions = "Not good with kids." },
+                new Pet { Id = 8, Name = "Daisey", Species = "Reptile", Age = 19, Description = "A turtle who loves to swim and stare at you.", BondedBuddyStatus = "None", SpecialCareInstructions = "Great with kids, needs to be with people or gets too lonely." },
                  new Pet { Id = 9, Name = "Raven", Species = "Cat", Age = 2, Description = "enchants with her silky midnight-blue fur and eyes that gleam like twin crescent moons, exuding an aura of serene elegance and quiet wisdom.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs attention" },
                 new Pet { Id = 10, Name = "Worm", Species = "Dog", Age = 3, Description = "a gentle soul, displaying a heartwarming affection by leaning into every pat and responding to commands with a calm and eager demeanor.", BondedBuddyStatus = "None", SpecialCareInstructions = "Afraid of worms" },
                  new Pet { Id = 11, Name = "Jack", Species = "Cat", Age = 2, Description = "a calm observer, finding solace in quiet corners and displaying a gentle, affectionate nature by curling up in laps during cozy evenings.", BondedBuddyStatus = "None", SpecialCareInstructions = "Needs litter to be extra clean" },
@@ -92,7 +96,7 @@ namespace AnimalRefugeFinal.Models
             RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string username = "petadmin";
-            string pwd = "adminpetabcd";
+            string pwd = "Adminpet";
             string roleName = "Admin";
 
             // if role doesn't exist, create it
