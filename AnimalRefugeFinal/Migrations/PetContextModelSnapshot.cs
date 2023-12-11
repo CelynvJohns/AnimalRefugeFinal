@@ -34,7 +34,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasIndex("PetsId");
 
-                    b.ToTable("AdoptionApplicationPet");
+                    b.ToTable("AdoptionApplicationPet", (string)null);
                 });
 
             modelBuilder.Entity("AnimalRefugeFinal.Models.AdoptionApplication", b =>
@@ -117,7 +117,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AdoptionApplications");
+                    b.ToTable("AdoptionApplications", (string)null);
                 });
 
             modelBuilder.Entity("AnimalRefugeFinal.Models.CurrentHumans", b =>
@@ -140,7 +140,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CurrentHumans");
+                    b.ToTable("CurrentHumans", (string)null);
                 });
 
             modelBuilder.Entity("AnimalRefugeFinal.Models.CurrentPet", b =>
@@ -173,7 +173,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CurrentPet");
+                    b.ToTable("CurrentPet", (string)null);
                 });
 
             modelBuilder.Entity("AnimalRefugeFinal.Models.Favorite", b =>
@@ -197,7 +197,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorites", (string)null);
                 });
 
             modelBuilder.Entity("AnimalRefugeFinal.Models.Pet", b =>
@@ -239,7 +239,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pets", (string)null);
 
                     b.HasData(
                         new
@@ -412,7 +412,7 @@ namespace AnimalRefugeFinal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statuses");
+                    b.ToTable("Statuses", (string)null);
 
                     b.HasData(
                         new
