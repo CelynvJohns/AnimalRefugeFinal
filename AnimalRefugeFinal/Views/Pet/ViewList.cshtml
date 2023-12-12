@@ -51,9 +51,12 @@
                         <p class="card-text h5">Bonded Buddy Status: @pet.BondedBuddyStatus</p>
                     </div>
                     <ul>
-                        <li class="list-group-item text-center">
-                        <button class="addToFavorites btn btn-primary btn-block" data-name="@pet.Name">Add to Favorites</button>
-                        </li>
+                    <button class="addToFavorites btn btn-primary btn-block"
+                            data-id="@pet.Id"
+                            data-name="@pet.Name">
+                        Add to Favorites
+                    </button>
+
                     </ul>
                     <div class="card-body text-center">
                         <a asp-area="" asp-controller="Pet" asp-action="Details" asp-route-id="@pet.Id" class="btn btn-dark btn-block text-white">Pet Details</a>
@@ -72,35 +75,44 @@
 
 
 
-    @section scripts {
+@section scripts {
     <script>
         // Define the addToFavorites function
-        function addToFavorites(name) {
+        function addToFavorites(id, name) {
             // Make an AJAX request to add the pet to favorites
             $.ajax({
                 type: "POST",
                 url: "/Favorites/AddToFavorite",
-                data: { name: name },
+                data: { id: id, name: name }, // Include both ID and Name
                 success: function (result) {
+                    console.log(result);  // Log the response to the console for inspection
                     alert('Added to Favorites: ' + name);
+
+                    // Update the view with the new data
+                    // This assumes your pets are directly rendered inside the <div class="row">
+                    $('.row').load(location.href + ' .row');
                 },
+
                 error: function (error) {
                     alert('Error adding to Favorites: ' + name);
                 }
             });
         }
 
-
         // Attach the addToFavorites function to the button click event
         $(document).ready(function () {
             $('button.addToFavorites').on('click', function () {
-                // Get the pet name from the data attribute
+                // Get the pet ID and name from data attributes
+                var id = $(this).data('id');
                 var name = $(this).data('name');
 
-                // Call the addToFavorites function with the pet name
-                addToFavorites(name);
+                // Call the addToFavorites function with the pet ID and name
+                addToFavorites(id, name);
             });
         });
     </script>
-    }
+}
+
+
+
 }
