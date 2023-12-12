@@ -107,25 +107,6 @@ namespace AnimalRefugeFinal.Controllers
 
 
 
-
-
-        public IActionResult TrackApplications()
-        {
-            var userId = _userManager.GetUserId(HttpContext.User);
-
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "User");
-            }
-
-            var applications = _context.AdoptionApplications
-                .Include(a => a.Pets)
-                .Where(a => a.UserId == userId)
-                .ToList();
-
-            return View(applications);
-        }
-
         // Add this method to your controller
         private List<string> GetDistinctSpecies(List<Pet> pets)
         {

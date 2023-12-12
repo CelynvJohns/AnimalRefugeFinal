@@ -33,7 +33,5 @@ namespace AnimalRefugeFinal.Models
 
         public bool IsAdopted { get; set; }
 
-        // Navigation property for adoption applications
-        public ICollection<AdoptionApplication> AdoptionApplications { get; set; }
     }
 }

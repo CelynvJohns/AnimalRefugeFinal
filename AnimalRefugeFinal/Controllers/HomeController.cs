@@ -19,5 +19,11 @@ namespace AnimalRefugeFinal.Controllers
             return View();
         }
 
+        //display adoptiont page
+        public IActionResult Adoption()
+        {
+            return View();
+        }
+
     }
 }

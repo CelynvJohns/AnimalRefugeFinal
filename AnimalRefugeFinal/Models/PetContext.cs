@@ -9,8 +9,6 @@ namespace AnimalRefugeFinal.Models
         public PetContext(DbContextOptions<PetContext> options) : base(options) { }
 
         public DbSet<Pet> Pets { get; set; }
-        public DbSet<Status> Statuses { get; set; } // Add Status DbSet
-        public DbSet<AdoptionApplication> AdoptionApplications { get; set; } // Add AdoptionApplication DB set
         public DbSet<User> Users { get; set; } // add User info to database
         public DbSet<Favorite> Favorites { get; set; } // add User favorite to database
 
@@ -44,41 +42,12 @@ namespace AnimalRefugeFinal.Models
 
                 );
 
-            //Other configurations or seed data go here
-            modelBuilder.Entity<Status>().HasData(
-                new Status { Id = 1, Name = "Pending" },
-                new Status { Id = 2, Name = "Approved" },
-                new Status { Id = 3, Name = "Rejected" }
-            );
-
-            // Add the configuration for the relationship between AdoptionApplication and Status
-            modelBuilder.Entity<AdoptionApplication>()
-                .HasOne(a => a.Status)
-                .WithMany()
-                .HasForeignKey(a => a.StatusId);
 
             //configure relationship for favorite and User
             modelBuilder.Entity<Favorite>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Favorites)
                 .HasForeignKey(f => f.UserId);
-
-            modelBuilder.Entity<AdoptionApplication>()
-            .HasMany(a => a.CurrentPet)
-            .WithOne()
-            .HasForeignKey(a => a.Id);
-
-            modelBuilder.Entity<AdoptionApplication>()
-                .HasMany(a => a.CurrentHumans)
-                .WithOne()
-                .HasForeignKey(a => a.Id);
-
-            // Configure relationship for AdoptionApplications
-            modelBuilder.Entity<AdoptionApplication>()
-                .HasOne(a => a.User)
-                .WithMany(u => u.AdoptionApplications)
-                .HasForeignKey(a => a.UserId);
-
 
             
 

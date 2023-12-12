@@ -168,6 +168,21 @@ div {
     cursor: pointer;
 }
 
+.contact-section {
+    margin-top: 50px;
+    border-top: 2px solid #ccc;
+    padding-top: 20px;
+}
+
+.email, .phone {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+    .email strong, .phone strong {
+        display: block;
+        margin-bottom: 8px;
+    }
 
 footer {
     background-color: #333;

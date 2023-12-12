@@ -180,20 +180,7 @@ namespace AnimalRefugeFinal.Controllers
         }
 
 
-        // ManageApplications Action
-        // Fetch a list of adoption applications submitted by users
-        // Display application details - user name, app date, pet info
-        // Provide options to approve or reject adoption applications
-        // Status of applications - pending, approved, rejected
-        public IActionResult ManageApplications()
-        {
-            var applications = _context.AdoptionApplications
-                .Include(a => a.User)
-                .Include(a => a.Pets)
-                .ToList();
 
-            return View(applications);
-        }
     }
 }
 
