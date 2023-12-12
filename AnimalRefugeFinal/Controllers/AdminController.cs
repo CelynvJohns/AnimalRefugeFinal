@@ -104,7 +104,7 @@ namespace AnimalRefugeFinal.Controllers
 
         // ViewUserProfile Action
         // Display the profile information of a specific user
-        public IActionResult ViewUserProfile(int userId)
+        public IActionResult ViewUserProfile(String userId)
         {
             // Fetch the user's profile information
             var userProfile = _context.Users.Find(userId);
@@ -119,7 +119,7 @@ namespace AnimalRefugeFinal.Controllers
         }
 
 
-        public IActionResult EditUser(int userId)
+        public IActionResult EditUser(String userId)
         {
             var user = _context.Users.Find(userId);
             if (user == null)
@@ -160,7 +160,7 @@ namespace AnimalRefugeFinal.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteUser(int userId)
+        public IActionResult DeleteUser(String userId)
         {
             var user = _context.Users.Find(userId);
             if (user == null)
