@@ -45,50 +45,7 @@ namespace AnimalRefugeFinal.Controllers
             return View(pet);
         }
 
-        // Handle POST request to process pet edits
-        [HttpPost]
-        public async Task<IActionResult> EditUser(User updatedUser)
-        {
-            if (!ModelState.IsValid)
-            {
-                // Model validation failed, return to the edit user form with validation errors
-                return View(updatedUser);
-            }
-
-            var userToUpdate = await _userManager.FindByIdAsync(updatedUser.Id);
-
-            if (userToUpdate != null)
-            {
-                // Update user properties
-                userToUpdate.UserName = updatedUser.UserName;
-                // Update other properties as needed
-
-                // Use UpdateAsync to persist changes to the database
-                var result = await _userManager.UpdateAsync(userToUpdate);
-
-                if (result.Succeeded)
-                {
-                    // Redirect to the manage users view
-                    return RedirectToAction("ManageUsers", new { userId = updatedUser.Id });
-                }
-                else
-                {
-                    // Handle errors, perhaps add errors to ModelState
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
-            }
-            else
-            {
-                // User with the specified Id not found
-                ModelState.AddModelError(string.Empty, "User not found");
-            }
-
-            // Return to the edit user form with errors
-            return View(updatedUser);
-        }
+        
 
         // DeletePet Action
         // Delete a pet from the database
@@ -153,7 +110,7 @@ namespace AnimalRefugeFinal.Controllers
             return NotFound();
         }
 
-
+        [HttpGet]
         public IActionResult EditUser(String userId)
         {
             var user = _context.Users.Find(userId);
