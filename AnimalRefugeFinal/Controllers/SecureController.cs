@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace AnimalRefugeFinal.Controllers
 {
@@ -10,6 +11,7 @@ namespace AnimalRefugeFinal.Controllers
         {
 
         }
+
         public IActionResult Index()
         {
             return View();
@@ -18,7 +20,17 @@ namespace AnimalRefugeFinal.Controllers
         [AllowAnonymous]
         public IActionResult Anom()
         {
-            return View();
+            try
+            {
+                // Your action logic here
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (customize based on your logging strategy)
+                TempData["error"] = "An error occurred while processing the request.";
+                return RedirectToAction("Index"); // Redirect to the appropriate action
+            }
         }
     }
 }

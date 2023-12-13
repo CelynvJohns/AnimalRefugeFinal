@@ -1,13 +1,14 @@
 ﻿using AnimalRefugeFinal.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AnimalRefugeFinal.Controllers
 {
     public class AccountController : Controller
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
@@ -15,8 +16,8 @@ namespace AnimalRefugeFinal.Controllers
             this.signInManager = signInManager;
         }
 
-       [HttpGet]
-       public IActionResult Register()
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
@@ -24,37 +25,46 @@ namespace AnimalRefugeFinal.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = new AnimalRefugeFinal.Models.User
+                if (ModelState.IsValid)
                 {
-                    UserName = model.Username,
-                    Email = model.Email
-                };
-
-                var result = await userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, "User");
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach(var error in result.Errors)
+                    var user = new User
                     {
-                        ModelState.AddModelError("", error.Description);
+                        UserName = model.Username,
+                        Email = model.Email
+                    };
+
+                    var result = await userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, "User");
+                        await signInManager.SignInAsync(user, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
                     }
                 }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                // Log the exception (customize based on your logging strategy)
+                TempData["error"] = "An error occurred during registration.";
+                return RedirectToAction("Index"); // Redirect to the appropriate action
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");   
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -67,29 +77,36 @@ namespace AnimalRefugeFinal.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await signInManager.PasswordSignInAsync(
-                    model.Username, model.Password, isPersistent: model.RememberMe,
-                    lockoutOnFailure: false);
-
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    if (!string.IsNullOrEmpty(model.ReturnURL) &&
-                        Url.IsLocalUrl(model.ReturnURL))
+                    var result = await signInManager.PasswordSignInAsync(
+                        model.Username, model.Password, isPersistent: model.RememberMe,
+                        lockoutOnFailure: false);
+
+                    if (result.Succeeded)
                     {
-                        return Redirect(model.ReturnURL);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
+                        if (!string.IsNullOrEmpty(model.ReturnURL) && Url.IsLocalUrl(model.ReturnURL))
+                        {
+                            return Redirect(model.ReturnURL);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
+                ModelState.AddModelError("", "Invalid username/password.");
+                return View(model);
             }
-            ModelState.AddModelError("", "Invalid username/password.");
-            return View(model);
+            catch (Exception ex)
+            {
+                // Log the exception (customize based on your logging strategy)
+                TempData["error"] = "An error occurred during login.";
+                return RedirectToAction("Index"); // Redirect to the appropriate action
+            }
         }
-
 
         public ViewResult AccessDenied()
         {
