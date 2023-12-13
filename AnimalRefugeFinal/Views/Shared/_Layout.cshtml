@@ -45,7 +45,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Favorites">Favorites</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Favorites" asp-action="Index">
+                                My Favorite Animals
+                                <span class="badge badge-light">
+                                    @if (!ViewContext.View.Path.Contains("Favorites"))
+                                    {
+                                        var session = new PetSession(Context.Session);
+                                        <text>@(session.GetMyPetCount())</text>
+                                    }
+                                </span>
+                            </a>
                         </li>
                         @if (User.IsInRole("Admin"))
                         {

@@ -8,7 +8,7 @@ using AnimalRefugeFinal.Models;  // Update with the correct namespace
 [Authorize]  // Requires the user to be authenticated
 public class FavoritesController : Controller
 {
-    //calls Index() action method when user clicks on the "My Favorite Pets" link
+    //calls Index() action method when user clicks on the "Favorites" link
     [HttpGet]
     public IActionResult Index()
     {
