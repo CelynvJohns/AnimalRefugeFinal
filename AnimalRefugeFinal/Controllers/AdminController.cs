@@ -147,8 +147,7 @@ namespace AnimalRefugeFinal.Controllers
             if (userProfile != null)
             {
                 userProfile.UserName = updatedUser.UserName;
-                userProfile.FirstName = updatedUser.FirstName;
-                userProfile.LastName = updatedUser.LastName;
+                
                 // Update other properties as needed
 
                 // Save changes to the database
@@ -156,7 +155,7 @@ namespace AnimalRefugeFinal.Controllers
             }
 
             // Redirect to the user's profile page after editing
-            return RedirectToAction("ViewUserProfile", new { userId = updatedUser.Id });
+            return RedirectToAction("ManageUsers", new { userId = updatedUser.Id });
         }
 
         [HttpPost]

@@ -62,8 +62,7 @@ namespace AnimalRefugeFinal.Controllers
                 {
                     user.UserName = editedUser.UserName;
                     user.Email = editedUser.Email;
-                    user.FirstName = editedUser.FirstName;
-                    user.LastName = editedUser.LastName;
+                    
 
                     await _userManager.UpdateAsync(user);
 
