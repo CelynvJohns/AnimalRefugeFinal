@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -314,6 +315,21 @@ namespace AnimalRefugeFinalTest
         }
 
         [Fact]
+        public void NotFound_ReturnsViewResult()
+        {
+            // Arrange
+            var loggerMock = new Mock<ILogger<HomeController>>();
+            var controller = new HomeController(loggerMock.Object);
+
+            // Act
+            var result = controller.NotFound() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Null(result.ViewName); // Assuming "NotFound" is the expected view name
+        }
+
+        [Fact]
         public void ErrorHandlingFilter_OnException_LogsErrorAndRedirectsToErrorView()
         {
             // Arrange
@@ -426,6 +442,93 @@ namespace AnimalRefugeFinalTest
             // Assert
             Assert.NotNull(allowAnonymousAttribute);
             Assert.NotEmpty(allowAnonymousAttribute);
+        }
+
+        [Fact]
+        public void ManagePet_ReturnsViewWithPets()
+        {
+            // Arrange
+            var context = new Mock<PetContext>();
+            var userManager = Mock.Of<UserManager<User>>();
+            var controller = new AdminController(context.Object, userManager);
+
+            var pets = new List<Pet>
+            {
+                new Pet { Id = 1, Name = "Pet1" },
+                new Pet { Id = 2, Name = "Pet2" },
+            };
+
+            context.Setup(c => c.Pets).Returns(MockDbSet(pets));
+
+            // Act
+            var result = controller.ManagePet() as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<IEnumerable<Pet>>(result.Model);
+            Assert.Equal(2, (result.Model as IEnumerable<Pet>).Count());
+        }
+
+        [Fact]
+        public void EditPet_WithValidPetId_ReturnsViewWithPet()
+        {
+            // Arrange
+            var context = new Mock<PetContext>();
+            var userManager = Mock.Of<UserManager<User>>();
+            var controller = new AdminController(context.Object, userManager);
+
+            var pets = new List<Pet>
+            {
+                new Pet { Id = 1, Name = "Pet1" },
+                new Pet { Id = 2, Name = "Pet2" },
+            };
+
+            context.Setup(c => c.Pets.Find(1)).Returns(pets.FirstOrDefault(p => p.Id == 1));
+
+            // Act
+            var result = controller.EditPet(1) as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<Pet>(result.Model);
+            Assert.Equal(1, (result.Model as Pet).Id);
+        }
+
+        [Fact]
+        public void EditPet_WithInvalidPetId_ReturnsNotFound()
+        {
+            // Arrange
+            var context = new Mock<PetContext>();
+            var userManager = Mock.Of<UserManager<User>>();
+            var controller = new AdminController(context.Object, userManager);
+
+            var pets = new List<Pet>
+            {
+                new Pet { Id = 1, Name = "Pet1" },
+                new Pet { Id = 2, Name = "Pet2" },
+            };
+
+            context.Setup(c => c.Pets.Find(99)).Returns((Pet)null);
+
+            // Act
+            var result = controller.EditPet(99) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        // Add more tests for other actions as needed
+
+        // Helper method to mock DbSet
+        private static DbSet<T> MockDbSet<T>(List<T> data) where T : class
+        {
+            var queryableData = data.AsQueryable();
+            var dbSet = new Mock<DbSet<T>>();
+            dbSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryableData.Provider);
+            dbSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryableData.Expression);
+            dbSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
+            dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryableData.GetEnumerator());
+            return dbSet.Object;
         }
 
     }

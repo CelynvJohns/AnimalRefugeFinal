@@ -34,6 +34,11 @@ namespace AnimalRefugeFinal.Controllers
             return View();
         }
 
+        public IActionResult NotFound()
+        {
+            return View();
+        }
+
         // Error handling
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

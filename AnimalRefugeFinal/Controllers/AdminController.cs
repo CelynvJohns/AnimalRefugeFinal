@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using AnimalRefugeFinal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics;
 
 namespace AnimalRefugeFinal.Controllers
 {
@@ -11,14 +13,10 @@ namespace AnimalRefugeFinal.Controllers
         private readonly PetContext _context;
         private readonly UserManager<User> _userManager;
 
-        public AdminController(UserManager<User> userManager)
-        {
-            _userManager = userManager;
-        }
-
-        public AdminController(PetContext context)
+        public AdminController(PetContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -27,151 +25,210 @@ namespace AnimalRefugeFinal.Controllers
         }
 
         // ManagePet Action
-        // Get a list of all pets from the database
-        // Display a table with pet info
-        // Options to edit, delete, or mark pet as adopted
         public IActionResult ManagePet()
         {
-            var pets = _context.Pets.ToList();
-            return View(pets);
+            try
+            {
+                var pets = _context.Pets.ToList();
+                return View(pets);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
         // EditPet Action
-        // Display a form to edit pet information
         [HttpGet]
         public IActionResult EditPet(int petId)
         {
-            var pet = _context.Pets.Find(petId);
-            return View(pet);
+            try
+            {
+                var pet = _context.Pets.Find(petId);
+                if (pet == null)
+                {
+                    // Handle the case where the pet is not found
+                    return NotFound();
+                }
+
+                return View(pet);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
-        
-
         // DeletePet Action
-        // Delete a pet from the database
         public IActionResult DeletePet(int petId)
         {
-            var pet = _context.Pets.Find(petId);
-
-            if (pet != null)
+            try
             {
-                // Remove the pet from the database
-                _context.Pets.Remove(pet);
-                _context.SaveChanges();
-            }
+                var pet = _context.Pets.Find(petId);
 
-            return RedirectToAction("ManagePet");
+                if (pet != null)
+                {
+                    _context.Pets.Remove(pet);
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction("ManagePet");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
         // MarkAsAdopted Action
-        // Mark a pet as adopted
         public IActionResult MarkAsAdopted(int petId)
         {
-            var pet = _context.Pets.Find(petId);
-
-            if (pet != null)
+            try
             {
-                //  mark the pet as adopted
-                pet.IsAdopted = true;
+                var pet = _context.Pets.Find(petId);
 
-                // Save changes to the database
-                _context.SaveChanges();
+                if (pet != null)
+                {
+                    pet.IsAdopted = true;
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction("ManagePet");
             }
-
-            return RedirectToAction("ManagePet");
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
-        
-    
-
         // ManageUsers Action
-        // Get a list of all users from the database, including user info
-        // Display a table with user details
-        // Option to view user profile, edit user information, or deactivate accounts
         public IActionResult ManageUsers()
         {
-            var users = _context.Users.ToList();
-            return View(users);
+            try
+            {
+                var users = _context.Users.ToList();
+                return View(users);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
         // ViewUserProfile Action
-        // Display the profile information of a specific user
-        public IActionResult ViewUserProfile(String userId)
+        public IActionResult ViewUserProfile(string userId)
         {
-            // Fetch the user's profile information
-            var userProfile = _context.Users.Find(userId);
-
-            if (userProfile != null)
+            try
             {
-                return View(userProfile);
-            }
+                var userProfile = _context.Users.Find(userId);
 
-            
-            return NotFound();
+                if (userProfile != null)
+                {
+                    return View(userProfile);
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
         [HttpGet]
-        public IActionResult EditUser(String userId)
+        public IActionResult EditUser(string userId)
         {
-            var user = _context.Users.Find(userId);
-            if (user == null)
+            try
             {
-                // Handle the case where the user is not found
-                return NotFound();
-            }
+                var user = _context.Users.Find(userId);
 
-            // Display the user edit form
-            return View(user);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
         [HttpPost]
         public IActionResult EditUser(User updatedUser)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                // Model validation failed, return to the edit user form with validation errors
-                return View(updatedUser);
+                if (!ModelState.IsValid)
+                {
+                    return View(updatedUser);
+                }
+
+                var userProfile = _context.Users.Find(updatedUser.Id);
+
+                if (userProfile != null)
+                {
+                    userProfile.UserName = updatedUser.UserName;
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction("ManageUsers", new { userId = updatedUser.Id });
             }
-
-            // Update the user's profile information
-            var userProfile = _context.Users.Find(updatedUser.Id);
-
-            if (userProfile != null)
+            catch (Exception ex)
             {
-                userProfile.UserName = updatedUser.UserName;
-                
-                // Update other properties as needed
-
-                // Save changes to the database
-                _context.SaveChanges();
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
             }
-
-            // Redirect to the manage users view
-            return RedirectToAction("ManageUsers", new { userId = updatedUser.Id });
         }
 
         [HttpPost]
-        public IActionResult DeleteUser(String userId)
+        public IActionResult DeleteUser(string userId)
         {
-            var user = _context.Users.Find(userId);
-            if (user == null)
+            try
             {
-                // Handle the case where the user is not found
-                return NotFound();
+                var user = _context.Users.Find(userId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+
+                return RedirectToAction("ManageUsers");
             }
-
-            // Remove the user from the database
-            _context.Users.Remove(user);
-
-            // Save changes to the database
-            _context.SaveChanges();
-
-            // Redirect to the manage users page or any other desired page
-            return RedirectToAction("ManageUsers");
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                // Redirect to an error view or display a generic error message
+                return RedirectToAction("Error");
+            }
         }
 
-
-
+        // Error action
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            // Log the error if needed
+            // Display a custom error view with the error details
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }
-

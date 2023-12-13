@@ -30,7 +30,7 @@ public class FavoritesController : Controller
         }
     }
 
-    // called when the user clicks "Clear Favorites" from the Favorites page
+    // called when the user clicks "Clear Favorites" from the Favorites page  // we don't use this, do we want to keep this?
     [HttpPost]
     public RedirectToActionResult Delete()
     {
