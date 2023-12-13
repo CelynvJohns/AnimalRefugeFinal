@@ -99,46 +99,26 @@ namespace AnimalRefugeFinal.Controllers
             return View("ViewList", filteredPets.ToList());
         }
 
-        // Action to handle adding a pet to favorites
+        // handles the POST request that's run when users click the "Add to Favorites" button on the ViewList page
+        //this method will receive a ViewModel object as its parameter
         [HttpPost]
-        public async Task<IActionResult> AddToFavorites(string name)
+        public RedirectToActionResult Add(PetViewModel model)
         {
-            var userId = await GetCurrentUserIdAsync();
+            model.Pet = _context.Pets.Where(t => t.Id == model.Pet.Id).FirstOrDefault();
 
-            // Find the pet in the database based on the provided name
-            var pet = _context.Pets.FirstOrDefault(p => p.Name == name);
+            var session = new PetSession(HttpContext.Session);
+            var pets = session.GetMyPets();
+            pets.Add(model.Pet);
+            session.SetPetList(pets);
 
-            if (pet == null)
-            {
-                return NotFound(); // Pet not found
-            }
+            TempData["message"] = $"{model.Pet.Name} added to your favorites";
 
-            // Check if the pet is already in the user's favorites
-            var existingFavorite = _context.Favorites.FirstOrDefault(f => f.UserId == userId && f.PetId == pet.Id);
-
-            if (existingFavorite != null)
-            {
-                // Pet is already in favorites
-                return BadRequest("Pet is already in favorites.");
-            }
-
-            // Add the pet to the user's favorites
-            var favorite = new Favorite
-            {
-                UserId = userId,
-                PetId = pet.Id
-            };
-
-            _context.Favorites.Add(favorite);
-            _context.SaveChanges();
-
-            // Update the session to reflect the changes in user's favorites
-            var petSession = new PetSession(_httpContextAccessor.HttpContext.Session);
-            var userFavorites = petSession.GetUserFavorites();
-            userFavorites.Add(pet);
-            petSession.SetUserFavorites(userFavorites);
-
-            return Ok(); // Success
+            return RedirectToAction("Index",
+                new
+                {
+                    Pet = session.GetMyPets()
+                }
+                );
         }
 
         private async Task<string> GetCurrentUserIdAsync()

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 
 namespace AnimalRefugeFinal.Models
 {
@@ -30,36 +31,21 @@ namespace AnimalRefugeFinal.Models
             session.SetInt32(CountKey, petList.Count);
         }
 
-        // Extension method to get the list of pets from the session
-        public List<Pet> GetPetList()
+        //get data store by SetPetList() method, gets a list of the pets 
+        public List<Pet> GetMyPets() => session.GetObject<List<Pet>>(PetListKey) ?? new List<Pet>();
+
+
+        
+
+        //get count of pets
+        public int GetMyPetCount() => session.GetInt32(CountKey) ?? 0;
+
+        //method to remove session country and count keys
+        public void RemoveMyPets()
         {
-            // Use GetObject() extension method of the SessionExtensions class to retrieve the list of pets from session state
-            var petList = session.GetObject<List<Pet>>(PetListKey);
-            return petList ?? new List<Pet>();
+            session.Remove(PetListKey);
+            session.Remove(CountKey);
         }
 
-        // Extension method to set the user's favorite pets in the session
-        public void SetUserFavorites(List<Pet> favoritePets)
-        {
-            // Serialize the list of pets to JSON and store it in session
-            var favoritesJson = JsonConvert.SerializeObject(favoritePets);
-            session.SetString(FavoritesKey, favoritesJson);
-        }
-
-        // Extension method to get the user's favorite pets from the session
-        public List<Pet> GetUserFavorites()
-        {
-            // Retrieve the serialized JSON string from session and deserialize it
-            var favoritesJson = session.GetString(FavoritesKey);
-            var favoritePets = JsonConvert.DeserializeObject<List<Pet>>(favoritesJson);
-            return favoritePets ?? new List<Pet>();
-        }
-
-        // Extension method to get the count of pets from the session
-        public int GetPetCount()
-        {
-            // Use GetInt32() method to retrieve the count of pets from session state
-            return session.GetInt32(CountKey) ?? 0;
-        }
     }
 }
