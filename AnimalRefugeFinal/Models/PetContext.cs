@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AnimalRefugeFinal.Models
 {
@@ -64,10 +66,47 @@ namespace AnimalRefugeFinal.Models
             UserManager<User> userManager = scoped.ServiceProvider.GetRequiredService<UserManager<User>>();
             RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string fname = "admin";
-            string lname = "admin";
+            
+            
+
+
             string username = "petadmin";
             string pwd = "Adminpet!52";
+            string roleName = "Admin";
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(roleName) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+
+            if (await userManager.FindByNameAsync(username) == null)
+            {
+                User user = new User() { UserName = username };
+
+                var result = await userManager.CreateAsync(user, pwd);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                }
+            }
+
+            
+        }
+
+        public static async Task CreateAdminUserName(IServiceProvider serviceProvider)
+        {
+            using var scoped = serviceProvider.CreateScope();
+            UserManager<User> userManager = scoped.ServiceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+
+
+
+            string fname = "admin";
+            string lname = "admin";
+            string username = "petadminn";
+            string pwd = "Adminpet!523";
             string roleName = "Admin";
 
             // if role doesn't exist, create it
@@ -88,4 +127,6 @@ namespace AnimalRefugeFinal.Models
             }
         }
     }
-}
+
+        
+    }

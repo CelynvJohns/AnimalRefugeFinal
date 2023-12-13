@@ -29,8 +29,6 @@ namespace AnimalRefugeFinal.Controllers
                 var user = new AnimalRefugeFinal.Models.User
                 {
                     UserName = model.Username,
-                    FirstName = model.Username,
-                    LastName = model.Username,
                     Email = model.Email
                 };
 

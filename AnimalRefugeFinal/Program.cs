@@ -69,6 +69,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 await PetContext.CreateAdminUser(app.Services);
+await PetContext.CreateAdminUserName(app.Services);
 
 
 
