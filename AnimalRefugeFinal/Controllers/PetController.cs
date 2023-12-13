@@ -104,7 +104,9 @@ namespace AnimalRefugeFinal.Controllers
         [HttpPost]
         public RedirectToActionResult Add(PetViewModel model)
         {
-            model.Pet = _context.Pets.Where(t => t.Id == model.Pet.Id).FirstOrDefault();
+            int petId = model.Pet.Id;
+
+            model.Pet = _context.Pets.Where(p => p.Id == model.Pet.Id).FirstOrDefault();
 
             var session = new PetSession(HttpContext.Session);
             var pets = session.GetMyPets();
@@ -113,7 +115,7 @@ namespace AnimalRefugeFinal.Controllers
 
             TempData["message"] = $"{model.Pet.Name} added to your favorites";
 
-            return RedirectToAction("Index",
+            return RedirectToAction("ViewList",
                 new
                 {
                     Pet = session.GetMyPets()
