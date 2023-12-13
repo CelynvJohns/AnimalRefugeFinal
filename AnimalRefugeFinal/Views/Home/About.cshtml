@@ -1,9 +1,12 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
 	ViewData["Title"] = "About Us";
 }
 
-<link rel="stylesheet" type="text/css" href="~/css/site.css">
-<link rel="stylesheet" type="text/css" href="~/css/about.css">
+<link rel="stylesheet" type="text/css" href="~/css/site.css" asp-append-version="true">
+<link rel="stylesheet" type="text/css" href="~/css/about.css" asp-append-version="true">
 
 <div class="text-center">
 	<h1 class="display-4">About Us</h1>

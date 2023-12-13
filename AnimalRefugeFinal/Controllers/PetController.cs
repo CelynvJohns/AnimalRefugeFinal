@@ -41,7 +41,7 @@ namespace AnimalRefugeFinal.Controllers
 
             if (pet == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFound");
             }
 
             return View(pet);
@@ -121,6 +121,12 @@ namespace AnimalRefugeFinal.Controllers
                     Pet = session.GetMyPets()
                 }
                 );
+        }
+
+        //Goes to the error handling page if the pet is not found 
+        public IActionResult NotFound()
+        {
+            return View("NotFound"); // Create a corresponding NotFound.cshtml view
         }
 
         private async Task<string> GetCurrentUserIdAsync()

@@ -14,4 +14,4 @@
 <p><strong>Bonded Buddy Status:</strong> @Model.BondedBuddyStatus</p>
 <p><strong>Special Care Instructions:</strong> @Model.SpecialCareInstructions</p>
 
-<a asp-area="" asp-controller="Pet" asp-action="ViewList" class="list-link">List of Pets</a>
+<a asp-area="" asp-controller="Pet" asp-action="ViewList" asp-route-id="@Model.Id" class="list-link">List of Pets</a>
