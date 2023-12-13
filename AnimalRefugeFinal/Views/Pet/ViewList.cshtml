@@ -52,9 +52,8 @@
                     </div>
                     <ul>
                     <form asp-action="Add" method="post">
-                        <a asp-action="Index" class="btn btn-primary"
-                            asp-route-pet="@pet">Return to Home Page</a>
-                            <button type="submit" class="btn btn-primary">Add to Favorites</button>
+                        <input type="hidden" name="Pet.Id" value="@pet.Id" />
+                        <button type="submit" class="btn btn-primary">Add to Favorites</button>
                     </form>
 
                     </ul>
