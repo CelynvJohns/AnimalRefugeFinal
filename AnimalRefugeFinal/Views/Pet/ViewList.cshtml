@@ -51,11 +51,11 @@
                         <p class="card-text h5">Bonded Buddy Status: @pet.BondedBuddyStatus</p>
                     </div>
                     <ul>
-                    <button class="addToFavorites btn btn-primary btn-block"
-                            data-id="@pet.Id"
-                            data-name="@pet.Name">
-                        Add to Favorites
-                    </button>
+                    <form asp-action="Add" method="post">
+                        <a asp-action="Index" class="btn btn-primary"
+                            asp-route-pet="@pet">Return to Home Page</a>
+                            <button type="submit" class="btn btn-primary">Add to Favorites</button>
+                    </form>
 
                     </ul>
                     <div class="card-body text-center">
