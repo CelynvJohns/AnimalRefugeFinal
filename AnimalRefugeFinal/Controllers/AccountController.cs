@@ -31,6 +31,8 @@ namespace AnimalRefugeFinal.Controllers
                 {
                     var user = new User
                     {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
                         UserName = model.Username,
                         Email = model.Email
                     };
@@ -38,7 +40,7 @@ namespace AnimalRefugeFinal.Controllers
                     var result = await userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, "User");
+                        await userManager.AddToRoleAsync(user, "USER");
                         await signInManager.SignInAsync(user, isPersistent: false);
                         return RedirectToAction("Index", "Home");
                     }
