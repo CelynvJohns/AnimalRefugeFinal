@@ -2,12 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using AnimalRefugeFinal.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace AnimalRefugeFinal.Controllers
 {
     public class AdminController : Controller
     {
         private readonly PetContext _context;
+        private readonly UserManager<User> _userManager;
+
+        public AdminController(UserManager<User> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public AdminController(PetContext context)
         {
@@ -40,19 +47,47 @@ namespace AnimalRefugeFinal.Controllers
 
         // Handle POST request to process pet edits
         [HttpPost]
-        public IActionResult EditPet(Pet editedPet)
+        public async Task<IActionResult> EditUser(User updatedUser)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Update the pet in the database
-                _context.Pets.Update(editedPet);
-                _context.SaveChanges();
-
-                return RedirectToAction("ManagePet");
+                // Model validation failed, return to the edit user form with validation errors
+                return View(updatedUser);
             }
 
-            // If ModelState is not valid, return to the edit form with errors
-            return View(editedPet);
+            var userToUpdate = await _userManager.FindByIdAsync(updatedUser.Id);
+
+            if (userToUpdate != null)
+            {
+                // Update user properties
+                userToUpdate.UserName = updatedUser.UserName;
+                // Update other properties as needed
+
+                // Use UpdateAsync to persist changes to the database
+                var result = await _userManager.UpdateAsync(userToUpdate);
+
+                if (result.Succeeded)
+                {
+                    // Redirect to the manage users view
+                    return RedirectToAction("ManageUsers", new { userId = updatedUser.Id });
+                }
+                else
+                {
+                    // Handle errors, perhaps add errors to ModelState
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            else
+            {
+                // User with the specified Id not found
+                ModelState.AddModelError(string.Empty, "User not found");
+            }
+
+            // Return to the edit user form with errors
+            return View(updatedUser);
         }
 
         // DeletePet Action
@@ -154,7 +189,7 @@ namespace AnimalRefugeFinal.Controllers
                 _context.SaveChanges();
             }
 
-            // Redirect to the user's profile page after editing
+            // Redirect to the manage users view
             return RedirectToAction("ManageUsers", new { userId = updatedUser.Id });
         }
 
