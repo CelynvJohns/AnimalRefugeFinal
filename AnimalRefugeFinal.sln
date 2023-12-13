@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalRefugeFinal", "AnimalRefugeFinal\AnimalRefugeFinal.csproj", "{2A23C22D-C5F7-4081-B6B0-7E905CC9CC26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalRefugeFinal", "AnimalRefugeFinal\AnimalRefugeFinal.csproj", "{2A23C22D-C5F7-4081-B6B0-7E905CC9CC26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalRefugeFinalTest", "AnimalRefugeFinalTest\AnimalRefugeFinalTest.csproj", "{114636F7-FB68-4BCC-9FC7-DB1E9E6E0958}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2A23C22D-C5F7-4081-B6B0-7E905CC9CC26} = {2A23C22D-C5F7-4081-B6B0-7E905CC9CC26}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{2A23C22D-C5F7-4081-B6B0-7E905CC9CC26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A23C22D-C5F7-4081-B6B0-7E905CC9CC26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A23C22D-C5F7-4081-B6B0-7E905CC9CC26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114636F7-FB68-4BCC-9FC7-DB1E9E6E0958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114636F7-FB68-4BCC-9FC7-DB1E9E6E0958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114636F7-FB68-4BCC-9FC7-DB1E9E6E0958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114636F7-FB68-4BCC-9FC7-DB1E9E6E0958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
