@@ -15,6 +15,8 @@ namespace AnimalRefugeFinal.Models
         [Required(ErrorMessage = "Please enter your last name")]
         [StringLength(50)]
         public string LastName { get; set; }
+
+        
         // Navigation property for favorites
         public ICollection<Favorite>? Favorites { get; set; }
 
