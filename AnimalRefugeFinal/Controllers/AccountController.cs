@@ -40,8 +40,7 @@ namespace AnimalRefugeFinal.Controllers
                     var result = await userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, "USER");
-                        await signInManager.SignInAsync(user, isPersistent: false);
+                        
                         return RedirectToAction("Index", "Home");
                     }
                     else
